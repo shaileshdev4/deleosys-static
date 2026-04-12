@@ -184,6 +184,21 @@ export const brandConfig = {
       email: supportEmail,
     },
 
+    contactPageData: {
+      herosection: {
+        contactherobg: contactherobg,
+        contactheromain: contactheromain,
+      },
+      icon: {
+        workplaceicon: workplaceicon,
+        brifcaseicon: brifcaseicon,
+        officeicon: officeicon,
+        locationicon: locationicon,
+        mailicon: mailicon,
+        callicon: callicon,
+      },
+    },
+
     OurServicesimg: {
       supplychain: supplychain,
       userexperiance: userexperiance,
@@ -373,21 +388,6 @@ export const brandConfig = {
         rocketicon:rocket,
       },
     },
-  }, 
-  contactPageData: {
-    herosection: {
-      contactherobg:contactherobg,
-      contactheromain:contactheromain,
-  
-    },
-    icon : {
-      workplaceicon:workplaceicon,
-      brifcaseicon:brifcaseicon,
-      officeicon:officeicon,
-      locationicon:locationicon,
-      mailicon:mailicon,
-      callicon:callicon,
-    }
   },
-}
+  },
 };
