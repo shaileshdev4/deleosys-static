@@ -1,4 +1,4 @@
-import mainLogo from "../assets/DeleosysLogo.png";
+import mainLogo from "../assets/deleosysLogo.png";
 import footerlogo from "../assets/deleosys-footerLogo.png";
 import heroimg1 from "../assets/hero-slider-img1.jpg";
 import heroimg11 from "../assets/tech-ipad-img1.1.png";
