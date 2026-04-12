@@ -1,7 +1,6 @@
 import { brandConfig } from "../../config/brandConfig";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
-import { FaArrowRight } from "react-icons/fa";
 
 const brand = brandConfig.meta.Industries.features;
 
@@ -62,11 +61,6 @@ const IndustriesSupport = () => {
                   {industry.tag}
                 </span>
                 <h3 className="text-white font-bold text-[20px] leading-[130%]">{industry.title}</h3>
-                {/* arrow appears on hover */}
-                <div className="flex items-center gap-2 text-white/0 group-hover:text-white transition-all duration-300 translate-y-2 group-hover:translate-y-0">
-                  <span className="text-[13px] font-medium">Learn more</span>
-                  <FaArrowRight className="text-[12px]" />
-                </div>
               </div>
             </motion.div>
           ))}

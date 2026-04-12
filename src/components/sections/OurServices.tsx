@@ -1,5 +1,4 @@
 import { brandConfig } from "../../config/brandConfig";
-import { FaAngleRight } from "react-icons/fa6";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 
@@ -58,7 +57,7 @@ const OurServices = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: i * 0.1, ease: "easeOut" }}
-              className="group bg-white rounded-2xl border border-[#1F2A44]/10 shadow-[0_2px_16px_rgba(31,42,68,0.08)] p-8 flex flex-col items-center text-center gap-6 hover:shadow-[0_4px_24px_rgba(230,92,0,0.15)] hover:border-[#F7931E]/30 transition-all duration-300"
+              className="group bg-white rounded-2xl border border-[#1F2A44]/10 shadow-[0_2px_16px_rgba(31,42,68,0.08)] p-8 flex flex-col items-center text-center gap-5 hover:shadow-[0_4px_24px_rgba(230,92,0,0.15)] hover:border-[#F7931E]/30 transition-all duration-300"
             >
               {/* ICON */}
               <div className="w-[80px] h-[80px] rounded-full bg-[#F7931E]/10 flex items-center justify-center group-hover:bg-[#F7931E]/20 transition-colors duration-300">
@@ -74,14 +73,6 @@ const OurServices = () => {
                   {service.description}
                 </p>
               </div>
-
-              {/* LINK */}
-              <a
-                href="#"
-                className="flex items-center gap-1 text-[13px] font-semibold text-[#E65C00] mt-auto group-hover:gap-2 transition-all duration-200"
-              >
-                Learn more <FaAngleRight />
-              </a>
             </motion.div>
           ))}
         </div>
