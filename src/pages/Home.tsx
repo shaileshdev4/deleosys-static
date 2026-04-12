@@ -1,6 +1,4 @@
 import HeroSection from "../components/sections/HeroSection";
-import StatsStrip from "../components/sections/StatsStrip";
-import TechMarquee from "../components/sections/TechMarquee";
 import OurServices from "../components/sections/OurServices";
 import IndustriesSupport from "../components/sections/IndustriesSupport";
 import CaseStudy from "../components/sections/CaseStudy";
@@ -11,8 +9,6 @@ import ContactUs from "./ContactUs";
 const Home = () => (
   <>
     <HeroSection />
-    <StatsStrip />
-    <TechMarquee />
     <OurServices />
     <IndustriesSupport />
     <CaseStudy />
