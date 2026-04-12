@@ -3,7 +3,6 @@ import { FaInstagram } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { CgFacebook } from "react-icons/cg";
 import { FaWhatsapp } from "react-icons/fa";
-import { FaArrowRight } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import "../../style/gloabal.css"
 
@@ -18,7 +17,7 @@ function Footer() {
       className="
   w-full 
   bg-[#1F2A44]
-  border-t border-white/10 
+  border-t-2 border-[#E65C00]/40 
   px-4 sm:px-6 md:px-10 lg:px-[77px] 
   py-10 sm:py-12 md:py-16 lg:py-[96px]
 "
@@ -291,7 +290,9 @@ function Footer() {
                 className="outline-none bg-transparent text-[#FFFFFF] text-[14px] w-full placeholder:text-[#FFFFFF]/60"
               />
 
-              <FaArrowRight className="text-[#FFFFFF] text-[16px] cursor-pointer" />
+              <button type="button" className="btn-primary !h-[32px] !px-3 !text-[13px] shrink-0" aria-label="Subscribe">
+                →
+              </button>
             </div>
           </div>
         </div>

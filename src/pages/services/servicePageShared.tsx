@@ -38,7 +38,7 @@ export const SectionHeader = ({
   subtitle,
 }: {
   label?: string;
-  title: string;
+  title: ReactNode;
   subtitle?: string;
 }) => (
   <div className="text-center mb-12">
@@ -71,7 +71,7 @@ export function ServicesHero({ heroBannerSrc }: { heroBannerSrc: string }) {
             transition={{ duration: 0.6, ease: "easeOut" }}
             className="font-bold text-[32px] sm:text-[44px] lg:text-[56px] leading-[110%] tracking-[-0.03em]"
           >
-            Smart Digital Solutions to Scale Your Business Globally
+            Smart Digital Solutions to <span className="gradient-text">Scale Your Business</span> Globally
           </motion.h1>
 
           <motion.p
@@ -193,7 +193,11 @@ export function OurProcess() {
         <FadeUp>
           <SectionHeader
             label="How we work"
-            title="Our Process"
+            title={
+              <>
+                Our <span className="gradient-text">Process</span>
+              </>
+            }
             subtitle="A proven five-step approach that takes you from idea to a live, high-performing product."
           />
         </FadeUp>

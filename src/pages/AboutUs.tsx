@@ -39,7 +39,7 @@ const FadeUp = ({ children, delay = 0 }: { children: ReactNode; delay?: number }
   );
 };
 
-const SectionHeader = ({ title, subtitle }: { title: string; subtitle?: string }) => (
+const SectionHeader = ({ title, subtitle }: { title: ReactNode; subtitle?: string }) => (
   <div className="text-center mb-12">
     <h2 className="text-[28px] sm:text-[36px] font-bold text-[#11253E]">{title}</h2>
     <div className="w-[120px] h-[4px] bg-gradient-to-r from-[#E65C00] to-[#F7931E] mx-auto mt-3 rounded-full" />
@@ -69,7 +69,7 @@ function AboutHero() {
               About Us
             </h1>
             <h2 className="text-[#F7931E] text-xl sm:text-2xl md:text-3xl lg:text-[40px] font-medium leading-[1.2]">
-              Driving Innovation & Excellence
+              Driving Innovation & <span className="gradient-text">Excellence</span>
             </h2>
           </motion.div>
           <motion.p
@@ -134,7 +134,11 @@ function WhoWeAre() {
       <div className="max-w-[1286px] mx-auto px-6 md:px-[76px]">
         <FadeUp>
           <SectionHeader
-            title="Who We Are"
+            title={
+              <>
+                Who We <span className="gradient-text">Are</span>
+              </>
+            }
             subtitle="We are more than just a tech company — we are your growth partners."
           />
         </FadeUp>
@@ -263,7 +267,9 @@ function DrivenByInnovation() {
       <div className="absolute inset-0 bg-black/60" />
       <FadeUp>
         <div className="relative z-10 flex flex-col items-center text-center gap-5 px-6 max-w-[720px]">
-          <h2 className="text-[28px] sm:text-[40px] font-bold text-white">Driven by Innovation</h2>
+          <h2 className="text-[28px] sm:text-[40px] font-bold text-white">
+            Driven by <span className="gradient-text">Innovation</span>
+          </h2>
           <div className="w-[180px] h-[4px] bg-gradient-to-r from-[#E65C00] to-[#F7931E] rounded-full" />
           <p className="text-white/80 text-[16px] sm:text-[18px] leading-[1.75] italic">
             &quot;Engineering the Future with Smart Technology&quot;

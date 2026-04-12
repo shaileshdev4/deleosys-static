@@ -41,7 +41,7 @@ const FadeUp = ({ children, delay = 0 }: { children: ReactNode; delay?: number }
   );
 };
 
-const SectionHeader = ({ title, subtitle }: { title: string; subtitle?: string }) => (
+const SectionHeader = ({ title, subtitle }: { title: ReactNode; subtitle?: string }) => (
   <div className="text-center mb-12">
     <h2 className="text-[28px] sm:text-[36px] font-bold text-[#11253E]">{title}</h2>
     <div className="w-[120px] h-[4px] bg-gradient-to-r from-[#E65C00] to-[#F7931E] mx-auto mt-3 rounded-full" />
@@ -71,7 +71,7 @@ function CareersHero() {
               Careers
             </h1>
             <h2 className="text-[20px] sm:text-[28px] md:text-[36px] font-medium leading-[1.2]">
-              Join Our Team. Build the Future.
+              Join Our Team. <span className="gradient-text">Build the Future.</span>
             </h2>
           </motion.div>
           <motion.p
@@ -195,7 +195,11 @@ function OpenPositions() {
       <div className="max-w-[1286px] mx-auto px-6 md:px-[76px]">
         <FadeUp>
           <SectionHeader
-            title="Open Positions"
+            title={
+              <>
+                Open <span className="gradient-text">Positions</span>
+              </>
+            }
             subtitle="Be part of a team where innovation, growth, and collaboration shape meaningful careers."
           />
         </FadeUp>

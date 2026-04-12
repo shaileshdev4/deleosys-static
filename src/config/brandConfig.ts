@@ -56,14 +56,12 @@ import androidicon from "../assets/serviceoption2-android.png";
 import iosicon from "../assets/serviceoption2-ios.png";
 import mobileicon from "../assets/serviceoption2-mobile.png";
 import brifcaseicon from "../assets/serviceoption2-briefcase.png";
-import supporticon from "../assets/support.png";
 import rocketicon from "../assets/rocket.png";
 import trend from "../assets/trend.png"
 //shieldicon
 
 // option cyber
 import serviceoptioncyber from "../assets/servicesbg3.png";
-import globalicon from "../assets/global.png";
 import secureicon from "../assets/serviceoption3-secure.png";
 import padlockicon from "../assets/serviceoption3-padlock.png";
 import cybersecurity from "../assets/serviceoption3-cyber-security.png";

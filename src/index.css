@@ -351,3 +351,23 @@ h1, h2, h3, h4, h5, h6 {
   pointer-events: none;
   opacity: 0.4;
 }
+
+/* ── Hide native cursor on desktop when custom cursor active ─────────────── */
+@media (min-width: 768px) {
+  *,
+  *::before,
+  *::after {
+    cursor: none !important;
+  }
+
+  input,
+  textarea,
+  select,
+  [contenteditable="true"] {
+    cursor: text !important;
+  }
+
+  select {
+    cursor: pointer !important;
+  }
+}

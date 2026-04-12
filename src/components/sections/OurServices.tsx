@@ -40,7 +40,7 @@ const OurServices = () => {
             What we do
           </p>
           <h2 className="text-[28px] sm:text-[32px] md:text-[36px] font-bold text-[#11253E]">
-            Our Services
+            Our <span className="gradient-text">Services</span>
           </h2>
           <div className="w-[120px] h-[4px] bg-gradient-to-r from-[#E65C00] to-[#F7931E] mx-auto mt-3 rounded-full" />
           <p className="text-[#4B5563] text-[14px] sm:text-[15px] text-center max-w-[600px] mx-auto mt-4 leading-[1.7]">
