@@ -6,12 +6,7 @@ import { Link } from "react-router-dom";
 
 const teamworkingimage = brandConfig.meta.CultureTalent.teamworkingimage;
 
-const values = [
-  { emoji: "🚀", label: "Innovation-first" },
-  { emoji: "🤝", label: "Collaborative" },
-  { emoji: "📈", label: "Growth mindset" },
-  { emoji: "🎯", label: "Result-driven" },
-];
+const values = ["Innovation-first", "Collaborative", "Growth mindset", "Result-driven"];
 
 const CultureTalent = () => {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.12 });
@@ -41,15 +36,19 @@ const CultureTalent = () => {
 
             {/* value pills */}
             <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
-              {values.map((v, i) => (
+              {values.map((label, i) => (
                 <motion.span
-                  key={i}
+                  key={label}
                   initial={{ opacity: 0, scale: 0.85 }}
                   animate={inView ? { opacity: 1, scale: 1 } : {}}
                   transition={{ duration: 0.35, delay: 0.3 + i * 0.08 }}
-                  className="flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-[#1F2A44]/10 text-[#1F2A44] text-[13px] font-medium shadow-sm"
+                  className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white border border-[#1F2A44]/10 text-[#1F2A44] text-[13px] font-medium shadow-sm"
                 >
-                  <span>{v.emoji}</span> {v.label}
+                  <span
+                    className="h-1.5 w-1.5 shrink-0 rounded-full bg-linear-to-r from-[#E65C00] to-[#F7931E]"
+                    aria-hidden
+                  />
+                  {label}
                 </motion.span>
               ))}
             </div>
