@@ -1,37 +1,353 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap');
 @import "tailwindcss";
 
+/* ── Base ─────────────────────────────────────────────────────────────────── */
 body {
   background-color: #FFFFFF;
   font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
+/* ── Gradient text ────────────────────────────────────────────────────────── */
 .gradient-text {
-  background: linear-gradient(to right, #E65C00, #F7931E);
+  background: linear-gradient(135deg, #E65C00 0%, #F7931E 100%);
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
   -webkit-text-fill-color: transparent;
 }
 
-.gradient-btn {
+/* ── Buttons ──────────────────────────────────────────────────────────────── */
+.btn-primary {
+  position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  padding: 10px 20px;
-  height: 56px;
+  gap: 8px;
+  padding: 0 24px;
+  height: 52px;
   border-radius: 9999px;
-  background: linear-gradient(to right, #E65C00, #F7931E);
-  color: #ffffff;
+  background: linear-gradient(135deg, #E65C00 0%, #F7931E 100%);
+  color: #fff;
+  font-family: 'Plus Jakarta Sans', sans-serif;
   font-weight: 600;
-  font-size: 16px;
-  transition: transform 0.3s ease;
+  font-size: 15px;
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.gradient-btn:hover {
-  transform: scale(1.05);
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.35) 50%,
+    transparent 100%
+  );
+  transform: skewX(-20deg);
+  transition: left 0.55s ease;
+}
+
+.btn-primary:hover::after {
+  left: 160%;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(230, 92, 0, 0.35);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+/* Outline variant */
+.btn-outline {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 24px;
+  height: 52px;
+  border-radius: 9999px;
+  background: transparent;
+  color: #fff;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.btn-outline:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: #fff;
+  transform: translateY(-2px);
+}
+
+/* Dark outline — on light bg */
+.btn-outline-dark {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 24px;
+  height: 52px;
+  border-radius: 9999px;
+  background: transparent;
+  color: #E65C00;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  border: 2px solid #E65C00;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-dark:hover {
+  background: linear-gradient(135deg, #E65C00, #F7931E);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(230, 92, 0, 0.25);
+}
+
+/* ── Cards ────────────────────────────────────────────────────────────────── */
+.card-hover {
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 40px rgba(230, 92, 0, 0.12);
+  border-color: rgba(247, 147, 30, 0.35) !important;
+}
+
+/* ── Section label pill ───────────────────────────────────────────────────── */
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 14px;
+  border-radius: 9999px;
+  background: rgba(247, 147, 30, 0.1);
+  border: 1px solid rgba(247, 147, 30, 0.25);
+  color: #E65C00;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* ── Gradient divider ─────────────────────────────────────────────────────── */
+.gradient-divider {
+  height: 4px;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, #E65C00 0%, #F7931E 100%);
+}
+
+/* ── Animated gradient orb (hero bg element) ──────────────────────────────── */
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.18;
+  animation: orb-drift 8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.orb-1 {
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, #F7931E 0%, transparent 70%);
+  animation-delay: 0s;
+  animation-duration: 9s;
+}
+
+.orb-2 {
+  width: 360px;
+  height: 360px;
+  background: radial-gradient(circle, #E65C00 0%, transparent 70%);
+  animation-delay: -3s;
+  animation-duration: 11s;
+}
+
+.orb-3 {
+  width: 280px;
+  height: 280px;
+  background: radial-gradient(circle, #F7931E 0%, transparent 70%);
+  animation-delay: -6s;
+  animation-duration: 7s;
+}
+
+@keyframes orb-drift {
+  0%, 100% { transform: translate(0px, 0px) scale(1);   }
+  33%       { transform: translate(30px, -20px) scale(1.05); }
+  66%       { transform: translate(-20px, 15px) scale(0.97); }
+}
+
+/* ── Shimmer loader (skeleton) ────────────────────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -600px 0; }
+  100% { background-position: 600px 0;  }
+}
+
+.shimmer {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 600px 100%;
+  animation: shimmer 1.4s infinite;
+}
+
+/* ── Marquee ──────────────────────────────────────────────────────────────── */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.marquee-track {
+  display: flex;
+  animation: marquee 22s linear infinite;
+  width: max-content;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+/* ── Floating animation (hero visual) ────────────────────────────────────── */
+@keyframes float {
+  0%, 100% { transform: translateY(0px);   }
+  50%       { transform: translateY(-12px); }
+}
+
+.float {
+  animation: float 5s ease-in-out infinite;
+}
+
+/* ── Fade slide in ────────────────────────────────────────────────────────── */
+@keyframes slideIn {
+  from { transform: translateX(-100%); opacity: 0; }
+  to   { transform: translateX(0);     opacity: 1; }
+}
+
+.animate-slideIn {
+  animation: slideIn 0.8s ease-out;
+}
+
+/* ── Count-up number ──────────────────────────────────────────────────────── */
+.stat-number {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 800;
+  background: linear-gradient(135deg, #E65C00 0%, #F7931E 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  line-height: 1;
+}
+
+/* ── Custom cursor ────────────────────────────────────────────────────────── */
+.cursor-dot {
+  width: 8px;
+  height: 8px;
+  background: #E65C00;
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: transform 0.1s ease;
+}
+
+.cursor-ring {
+  width: 36px;
+  height: 36px;
+  border: 1.5px solid rgba(230, 92, 0, 0.5);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: all 0.12s ease;
+}
+
+/* ── Gradient border card ─────────────────────────────────────────────────── */
+.gradient-border {
+  position: relative;
+  background: #fff;
+  border-radius: 16px;
+}
+
+.gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  padding: 1.5px;
+  background: linear-gradient(135deg, rgba(230,92,0,0), rgba(247,147,30,0.5), rgba(230,92,0,0));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.gradient-border:hover::before {
+  opacity: 1;
+}
+
+/* ── Section divider wave ─────────────────────────────────────────────────── */
+.section-wave {
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+}
+
+/* ── Glow on focus (inputs) ───────────────────────────────────────────────── */
+.input-glow:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(230, 92, 0, 0.15);
+  border-color: #F7931E !important;
+}
+
+/* ── Dark section ─────────────────────────────────────────────────────────── */
+.section-dark {
+  background: #0F1A2E;
+  color: #fff;
+}
+
+/* ── Subtle grid bg ───────────────────────────────────────────────────────── */
+.bg-grid {
+  background-image:
+    linear-gradient(rgba(31, 42, 68, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(31, 42, 68, 0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+/* ── Noise overlay ────────────────────────────────────────────────────────── */
+.bg-noise::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  opacity: 0.4;
 }
