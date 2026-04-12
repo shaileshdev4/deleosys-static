@@ -1,69 +1,92 @@
-import React from "react";
-
 import { brandConfig } from "../../config/brandConfig";
+import { motion } from "framer-motion";
+import { useInView } from "react-intersection-observer";
+import { FaArrowRight } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
-function CultureTalent() {
-  const teamworkingimage = brandConfig.meta.CultureTalent.teamworkingimage;
+const teamworkingimage = brandConfig.meta.CultureTalent.teamworkingimage;
+
+const values = [
+  { emoji: "🚀", label: "Innovation-first" },
+  { emoji: "🤝", label: "Collaborative" },
+  { emoji: "📈", label: "Growth mindset" },
+  { emoji: "🎯", label: "Result-driven" },
+];
+
+const CultureTalent = () => {
+  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.12 });
+
   return (
-   <section className="w-full bg-[#FFFFFF] py-0">
-      <div className="max-w-[1280px] mx-auto px-4 sm:px-6">
+    <section className="w-full bg-[#FAFAFA] py-20 md:py-28">
+      <div ref={ref} className="max-w-[1280px] mx-auto px-6 md:px-10">
+        <div className="flex flex-col lg:flex-row items-center gap-14 lg:gap-20">
+          {/* LEFT content */}
+          <motion.div
+            initial={{ opacity: 0, x: -28 }}
+            animate={inView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            className="flex-1 max-w-[500px] flex flex-col gap-6 text-center lg:text-left items-center lg:items-start"
+          >
+            <span className="section-label">Culture & Talent</span>
 
-        {/* Container */}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between mt-[58px] gap-6 mx-auto md:gap-[80px]">
+            <h2 className="text-[28px] sm:text-[34px] md:text-[40px] font-bold text-[#1F2A44] leading-[120%]">
+              Built by passionate <span className="gradient-text">problem solvers</span>
+            </h2>
+            <div className="gradient-divider w-[160px]" />
 
-          {/* LEFT CONTENT */}
+            <p className="text-[#4B5563] text-[15px] sm:text-[16px] leading-[1.75] max-w-[420px]">
+              Our team brings together strategists, designers, and technologists who are passionate about building meaningful
+              digital experiences that matter.
+            </p>
 
-
-          <div className="w-full sm:flex-1 max-w-full sm:max-w-[541px] mx-auto md:mx-0 text-center md:text-left">
-
-           {/* Header Row */}
-        <div className="flex flex-col   justify-between gap-6 sm:gap-8 md:gap-10 lg:gap-7 mb-6 sm:mb-0 md:mb-2 min-h-[60px] sm:min-h-[70px] lg:min-h-[88px]  ">
-          <div className=" w-full min-h-[60px] sm:min-h-[70px] lg:min-h-[88px] flex flex-col gap-[6px] sm:gap-[8px]">
-            <div className="min-h-[40px] sm:min-h-[50px] lg:min-h-[58px] items-center sm:items-start justify-center flex flex-col gap-[2px] sm:gap-[4px]">
-              <p className="text-[12px] sm:text-[13px] md:text-[14px] leading-[157%] tracking-[0.05em] font-medium text-[#F7931E]">
-                Culture & Talent
-              </p>
-              <h2 className="text-[26px]  sm:text-[32px] md:text-[36px] lg:text-[40px] font-medium text-[#1F2A44] leading-[120%] whitespace-nowrap">
-               Built by passionate <br className=" block lg:hidden" /> problem <br className=" hidden lg:block" /> solvers
-              </h2>
-              <div className="w-[100px] sm:w-[140px] md:w-[160px] lg:w-[180px] h-[4px] sm:h-[5px] lg:h-[6px] rounded-[8px] bg-gradient-to-r from-[#E65C00] to-[#F7931E]" />
-            </div>
-          </div>
-            <p className="text-[#1C1C1C] text-[16px] sm:text-[18px] leading-[1.5] mb-8 tracking-[0.002em] max-w-[454px] mx-auto md:mx-0">
-       Our team brings together strategists, designers, and 
-technologists who are passionate about building 
-meaningful digital experiences.
-      </p>
-
-
-        </div>
-
-    {/* BUTTON */}
-    <div className="flex justify-center md:justify-start">
-       {/* BUTTON */}
-          <button className="mt-2 p-[2px] rounded-full bg-gradient-to-r from-[#E65C00] to-[#F7931E]">
-              <span className="flex items-center justify-center h-[40px] px-4 bg-white rounded-full text-[#E65C00] font-semibold">
-                Join our team
-              </span>
-            </button>
-    </div>
-
-  </div>
-
-          {/* RIGHT IMAGE */}
-          <div className="flex-1 w-full max-w-[626px]">
-
-            <div className="rounded-2xl overflow-hidden w-full h-[491px]  relative flex items-center justify-center">
-               <img src={ teamworkingimage} alt="" />
-
+            {/* value pills */}
+            <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
+              {values.map((v, i) => (
+                <motion.span
+                  key={i}
+                  initial={{ opacity: 0, scale: 0.85 }}
+                  animate={inView ? { opacity: 1, scale: 1 } : {}}
+                  transition={{ duration: 0.35, delay: 0.3 + i * 0.08 }}
+                  className="flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-[#1F2A44]/10 text-[#1F2A44] text-[13px] font-medium shadow-sm"
+                >
+                  <span>{v.emoji}</span> {v.label}
+                </motion.span>
+              ))}
             </div>
 
-          </div>
+            <Link to="/careers" className="btn-primary mt-2 inline-flex items-center gap-2">
+              Join our team <FaArrowRight className="text-[13px]" />
+            </Link>
+          </motion.div>
 
+          {/* RIGHT image */}
+          <motion.div
+            initial={{ opacity: 0, x: 28 }}
+            animate={inView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.15, ease: "easeOut" }}
+            className="flex-1 w-full max-w-[580px] relative"
+          >
+            <div className="rounded-2xl overflow-hidden shadow-[0_8px_48px_rgba(31,42,68,0.12)] relative">
+              <img src={teamworkingimage} alt="Our team" className="w-full h-[420px] object-cover" />
+              {/* subtle gradient overlay at bottom */}
+              <div className="absolute inset-0 bg-linear-to-t from-black/30 to-transparent rounded-2xl" />
+            </div>
+
+            {/* floating stat */}
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: 0.55 }}
+              className="absolute -bottom-5 -left-5 bg-white rounded-2xl shadow-[0_8px_32px_rgba(31,42,68,0.14)] px-5 py-4 border border-[#1F2A44]/10"
+            >
+              <p className="stat-number text-[28px]">20+</p>
+              <p className="text-[#9CA3AF] text-[12px] mt-0.5 font-medium">Team members</p>
+            </motion.div>
+          </motion.div>
         </div>
       </div>
     </section>
   );
-}
+};
 
 export default CultureTalent;
