@@ -9,8 +9,9 @@ import "../../style/gloabal.css"
 function Footer() {
   const logo = brandConfig.meta.footerlogo;
   const contact = brandConfig.meta.contactPage;
-  const whatsapp =brandConfig.meta.mainPhone
-  const nav = brandConfig.meta.home.nav
+  const whatsapp = brandConfig.meta.mainPhone;
+  const nav = brandConfig.meta.home.nav;
+  const whatsappDigits = whatsapp.replace(/\D/g, "");
 
   return (
     <footer
@@ -146,7 +147,7 @@ function Footer() {
 
                 {/* WhatsApp */}
                 <a
-                  href={`https://wa.me/${whatsapp}`}
+                  href={`https://wa.me/${whatsappDigits}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="
@@ -246,12 +247,23 @@ function Footer() {
             <ul className="flex flex-col gap-2 sm:gap-3">
               {nav.menuItems.map((item, i) => (
                 <li key={i}>
-                  <Link
-                    to={item.path === "#" ? "/" : item.path}
-                    className="text-[15px] font-normal text-[#FFFFFF] hover:text-[#F37021] hover:translate-x-1 transition-all duration-200 inline-block"
-                  >
-                    {item.label}
-                  </Link>
+                  {item.subMenu?.[0]?.path?.startsWith("http") ? (
+                    <a
+                      href={item.subMenu[0].path}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[15px] font-normal text-[#FFFFFF] hover:text-[#F37021] hover:translate-x-1 transition-all duration-200 inline-block"
+                    >
+                      {item.label}
+                    </a>
+                  ) : (
+                    <Link
+                      to={item.path === "#" ? item.subMenu?.[0]?.path ?? "/" : item.path}
+                      className="text-[15px] font-normal text-[#FFFFFF] hover:text-[#F37021] hover:translate-x-1 transition-all duration-200 inline-block"
+                    >
+                      {item.label}
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>

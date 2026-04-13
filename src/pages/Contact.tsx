@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+﻿import type { ReactNode } from "react";
 import { useState } from "react";
 import { brandConfig } from "../config/brandConfig";
 import { motion } from "framer-motion";
@@ -47,7 +47,7 @@ const FadeUp = ({ children, delay = 0 }: { children: ReactNode; delay?: number }
   );
 };
 
-// ─── 1. Hero ──────────────────────────────────────────────────────────────────
+// â”€â”€â”€ 1. Hero â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function ContactHero() {
   return (
     <section className="relative w-full min-h-[340px] md:min-h-[420px] flex items-center overflow-hidden bg-[#0F1A2E]">
@@ -68,7 +68,7 @@ function ContactHero() {
             Let&apos;s build something <span className="gradient-text">great together</span>
           </h1>
           <p className="text-white/70 text-[16px] leading-[1.75] max-w-[480px]">
-            Whether you have a project in mind, need support, or want to collaborate — our team is here to help.
+            Whether you have a project in mind, need support, or want to collaborate â€” our team is here to help.
           </p>
         </motion.div>
       </div>
@@ -76,12 +76,11 @@ function ContactHero() {
   );
 }
 
-// ─── 2. Form + CTA split ──────────────────────────────────────────────────────
+// â”€â”€â”€ 2. Form + CTA split â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function ContactForm() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const icons = brandConfig.meta.contact.images;
-  const logo = brandConfig.meta.companylogo;
 
   const handleSubmit = () => {
     setLoading(true);
@@ -95,10 +94,9 @@ function ContactForm() {
     <section className="w-full bg-white py-20 md:py-28">
       <div className="max-w-[1280px] mx-auto px-6 md:px-10">
         <div className="flex flex-col lg:flex-row gap-14 lg:gap-20 items-start">
-          {/* LEFT — CTA copy */}
+          {/* LEFT â€” CTA copy */}
           <FadeUp>
             <div className="flex-1 max-w-[440px] flex flex-col gap-7 lg:sticky lg:top-28">
-              <img src={logo} alt="Deleosys" className="w-[160px] h-auto" />
 
               <div className="flex flex-col gap-3">
                 <h2 className="text-[28px] sm:text-[34px] font-bold text-[#1F2A44] leading-[1.2]">
@@ -146,7 +144,7 @@ function ContactForm() {
             </div>
           </FadeUp>
 
-          {/* RIGHT — form */}
+          {/* RIGHT â€” form */}
           <FadeUp delay={0.15}>
             <div className="flex-1 w-full max-w-[660px] bg-white rounded-2xl border border-[#1F2A44]/10 shadow-[0_8px_48px_rgba(31,42,68,0.1)] p-8 md:p-10">
               {/* success state */}
@@ -298,7 +296,7 @@ function ContactForm() {
   );
 }
 
-// ─── 3. Office cards ──────────────────────────────────────────────────────────
+// â”€â”€â”€ 3. Office cards â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function GetInTouch() {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
 
@@ -313,7 +311,7 @@ function GetInTouch() {
             </h2>
             <div className="gradient-divider w-[120px] mx-auto mt-3" />
             <p className="text-[#4B5563] text-[15px] max-w-[520px] mx-auto mt-4 leading-[1.75]">
-              Reach out via email or visit one of our offices — our team will respond promptly.
+              Reach out via email or visit one of our offices â€” our team will respond promptly.
             </p>
           </div>
         </FadeUp>
@@ -392,3 +390,4 @@ const Contact = () => (
 );
 
 export default Contact;
+

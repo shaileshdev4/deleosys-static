@@ -55,62 +55,93 @@ export const SectionHeader = ({
 
 export function ServicesHero({ heroBannerSrc }: { heroBannerSrc: string }) {
   return (
-    <section className="relative w-full min-h-[400px] sm:min-h-[520px] lg:min-h-[564px] flex items-center justify-center overflow-hidden">
-      <img
-        src={heroBannerSrc}
-        alt=""
-        className="absolute inset-0 w-full h-full object-cover object-center z-0"
-      />
-      <div className="absolute inset-0 bg-black/50" />
+    <>
+      <style>{`
+        @keyframes services-hero-breathe {
+          0%,100% { transform: scale(1); filter: drop-shadow(0 12px 30px rgba(0,0,0,0.38)); }
+          50% { transform: scale(1.015); filter: drop-shadow(0 20px 50px rgba(0,0,0,0.5)); }
+        }
+        .services-hero-breathe { animation: services-hero-breathe 4s ease-in-out infinite; }
+      `}</style>
+      <section className="relative w-full min-h-[520px] md:h-[680px]" style={{ overflow: "hidden" }}>
+        <motion.div
+          initial={{ clipPath: "inset(0 100% 0 0)", opacity: 0.7 }}
+          animate={{ clipPath: "inset(0 0% 0 0)", opacity: 1 }}
+          transition={{ duration: 0.75, ease: [0.76, 0, 0.24, 1] }}
+          className="absolute inset-0"
+        >
+          <img src={heroBannerSrc} alt="" className="absolute inset-0 w-full h-full object-cover object-center z-0" />
+          <div
+            className="absolute inset-0"
+            style={{
+              background: "linear-gradient(to right, rgba(0,0,0,0.80) 0%, rgba(0,0,0,0.55) 45%, rgba(0,0,0,0.10) 100%)",
+            }}
+          />
+        </motion.div>
 
-      <div className="relative z-10 w-full max-w-[1320px] mx-auto flex items-center justify-between px-6">
-        <div className="flex flex-col gap-6 max-w-[680px] text-white">
-          <motion.h1
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            className="font-bold text-[32px] sm:text-[44px] lg:text-[56px] leading-[110%] tracking-[-0.03em]"
-          >
-            Smart Digital Solutions to <span className="gradient-text">Scale Your Business</span> Globally
-          </motion.h1>
+        <div className="orb orb-1 top-[-80px] left-[-60px]" />
+        <div className="orb orb-2 bottom-[-40px] left-[30%]" />
+        <div className="absolute inset-0 bg-grid opacity-25 pointer-events-none" />
 
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.25 }}
-            className="text-[15px] sm:text-[17px] text-white/90 max-w-[560px] leading-[1.7]"
-          >
-            We help startups and enterprises with Web, App, AI, Automation & Cyber Security solutions to accelerate
-            growth and innovation.
-          </motion.p>
+        <div className="relative z-10 w-full max-w-[1320px] mx-auto flex items-center justify-between px-6 min-h-[520px] md:min-h-[680px]">
+          <div className="flex flex-col gap-6 max-w-[680px] text-white">
+            <motion.h1
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              className="font-bold text-[32px] sm:text-[44px] lg:text-[56px] leading-[110%] tracking-[-0.03em]"
+            >
+              Smart Digital Solutions to <span className="gradient-text">Scale Your Business</span> Globally
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.25 }}
+              className="text-[15px] sm:text-[17px] text-white/90 max-w-[560px] leading-[1.7]"
+            >
+              We help startups and enterprises with Web, App, AI, Automation & Cyber Security solutions to accelerate
+              growth and innovation.
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.45 }}
+              className="flex gap-4 flex-wrap"
+            >
+              <button className="flex items-center gap-2 px-6 h-[52px] rounded-full bg-gradient-to-r from-[#E65C00] to-[#F7931E] text-white font-semibold text-[15px] hover:scale-105 hover:shadow-lg hover:shadow-orange-500/30 transition-all duration-300">
+                Get Free Consultation
+              </button>
+              <button className="flex items-center gap-2 px-6 h-[52px] rounded-full border-2 border-white text-white font-semibold text-[15px] hover:bg-white/10 hover:scale-105 transition-all duration-300">
+                <IoCallOutline /> Talk to Expert
+              </button>
+            </motion.div>
+          </div>
 
           <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.45 }}
-            className="flex gap-4 flex-wrap"
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.55, delay: 0.2, ease: [0.76, 0, 0.24, 1] }}
+            className="hidden lg:block absolute bottom-[-70px] right-[-30px] w-[500px] xl:w-[620px] pointer-events-none"
           >
-            <button className="flex items-center gap-2 px-6 h-[52px] rounded-full bg-gradient-to-r from-[#E65C00] to-[#F7931E] text-white font-semibold text-[15px] hover:scale-105 hover:shadow-lg hover:shadow-orange-500/30 transition-all duration-300">
-              Get Free Consultation
-            </button>
-            <button className="flex items-center gap-2 px-6 h-[52px] rounded-full border-2 border-white text-white font-semibold text-[15px] hover:bg-white/10 hover:scale-105 transition-all duration-300">
-              <IoCallOutline /> Talk to Expert
-            </button>
+            <div className="relative">
+              <img src={servicehero.servicebgmain} alt="" className="w-full h-auto object-contain services-hero-breathe" />
+              <motion.div
+                initial={{ x: "-100%", opacity: 0 }}
+                animate={{ x: "200%", opacity: [0, 0.6, 0] }}
+                transition={{ duration: 1.1, delay: 0.5, ease: "easeInOut" }}
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                  background: "linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.18) 50%, transparent 60%)",
+                  mixBlendMode: "screen",
+                }}
+              />
+            </div>
           </motion.div>
         </div>
-
-        <div className="hidden lg:flex justify-end w-[440px]">
-          <motion.img
-            src={servicehero.servicebgmain}
-            alt=""
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="w-[400px] h-auto object-contain"
-          />
-        </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }
 
