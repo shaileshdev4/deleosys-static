@@ -4,6 +4,7 @@ import { FaArrowRightLong, FaAngleRight } from "react-icons/fa6";
 import { IoCallOutline } from "react-icons/io5";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
+import { useNavigate } from "react-router-dom";
 
 const servicehero = brandConfig.meta.Services.servicehero;
 
@@ -54,6 +55,7 @@ export const SectionHeader = ({
 );
 
 export function ServicesHero({ heroBannerSrc }: { heroBannerSrc: string }) {
+  const navigate = useNavigate();
   return (
     <>
       <style>{`
@@ -110,10 +112,20 @@ export function ServicesHero({ heroBannerSrc }: { heroBannerSrc: string }) {
               transition={{ duration: 0.4, delay: 0.45 }}
               className="flex gap-4 flex-wrap"
             >
-              <button className="flex items-center gap-2 px-6 h-[52px] rounded-full bg-gradient-to-r from-[#E65C00] to-[#F7931E] text-white font-semibold text-[15px] hover:scale-105 hover:shadow-lg hover:shadow-orange-500/30 transition-all duration-300">
+              <button
+                type="button"
+                onClick={() => navigate("/contact")}
+                className="flex items-center gap-2 px-6 h-[52px] rounded-full bg-gradient-to-r from-[#E65C00] to-[#F7931E] text-white font-semibold text-[15px] hover:scale-105 hover:shadow-lg hover:shadow-orange-500/30 transition-all duration-300"
+              >
                 Get Free Consultation
               </button>
-              <button className="flex items-center gap-2 px-6 h-[52px] rounded-full border-2 border-white text-white font-semibold text-[15px] hover:bg-white/10 hover:scale-105 transition-all duration-300">
+              <button
+                type="button"
+                onClick={() => {
+                  window.location.href = "tel:+919270137130";
+                }}
+                className="flex items-center gap-2 px-6 h-[52px] rounded-full border-2 border-white text-white font-semibold text-[15px] hover:bg-white/10 hover:scale-105 transition-all duration-300"
+              >
                 <IoCallOutline /> Talk to Expert
               </button>
             </motion.div>
@@ -123,7 +135,7 @@ export function ServicesHero({ heroBannerSrc }: { heroBannerSrc: string }) {
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.55, delay: 0.2, ease: [0.76, 0, 0.24, 1] }}
-            className="hidden lg:block absolute bottom-[-70px] right-[-30px] w-[500px] xl:w-[620px] pointer-events-none"
+            className="hidden lg:block absolute top-1/2 -translate-y-1/2 right-[-30px] w-[500px] xl:w-[620px] pointer-events-none"
           >
             <div className="relative">
               <img src={servicehero.servicebgmain} alt="" className="w-full h-auto object-contain services-hero-breathe" />
@@ -146,6 +158,7 @@ export function ServicesHero({ heroBannerSrc }: { heroBannerSrc: string }) {
 }
 
 export function ServiceBanner({ title, description }: { title: string; description: string }) {
+  const navigate = useNavigate();
   return (
     <section className="relative w-full h-[380px] flex items-center justify-center overflow-hidden mt-20">
       <img
@@ -158,7 +171,11 @@ export function ServiceBanner({ title, description }: { title: string; descripti
         <h2 className="text-[28px] sm:text-[40px] font-bold text-white">{title}</h2>
         <div className="w-[80px] h-[3px] bg-gradient-to-r from-[#E65C00] to-[#F7931E] rounded-full" />
         <p className="text-white/85 text-[15px] sm:text-[17px] leading-[1.7]">{description}</p>
-        <button className="inline-flex items-center gap-2 px-6 h-[52px] bg-gradient-to-r from-[#E65C00] to-[#F7931E] text-white font-medium rounded-full hover:opacity-90 hover:scale-105 transition-all duration-300 mt-2">
+        <button
+          type="button"
+          onClick={() => navigate("/contact")}
+          className="inline-flex items-center gap-2 px-6 h-[52px] bg-gradient-to-r from-[#E65C00] to-[#F7931E] text-white font-medium rounded-full hover:opacity-90 hover:scale-105 transition-all duration-300 mt-2"
+        >
           Schedule Your Project <FaArrowRightLong />
         </button>
       </div>
@@ -306,6 +323,7 @@ export function ReadyToBuildSection({
   title: string;
   description: string;
 }) {
+  const navigate = useNavigate();
   return (
     <section className="w-full py-20 bg-white">
       <FadeUp>
@@ -316,7 +334,11 @@ export function ReadyToBuildSection({
             <h2 className="text-[24px] sm:text-[36px] font-bold text-white">{title}</h2>
             <div className="w-[200px] h-[3px] bg-gradient-to-r from-[#E65C00] to-[#F7931E] rounded-full" />
             <p className="text-white/85 text-[15px] max-w-[500px] leading-[1.7]">{description}</p>
-            <button className="inline-flex items-center gap-2 px-6 h-[52px] bg-gradient-to-r from-[#E65C00] to-[#F7931E] text-white font-medium rounded-full hover:opacity-90 hover:scale-105 transition-all duration-300">
+            <button
+              type="button"
+              onClick={() => navigate("/contact")}
+              className="inline-flex items-center gap-2 px-6 h-[52px] bg-gradient-to-r from-[#E65C00] to-[#F7931E] text-white font-medium rounded-full hover:opacity-90 hover:scale-105 transition-all duration-300"
+            >
               Get Free Consultation <FaAngleRight />
             </button>
           </div>
