@@ -64,8 +64,8 @@ function ContactHero() {
           className="flex flex-col gap-4 max-w-[600px]"
         >
           <span className="section-label !text-white/70 !border-white/20 !bg-white/10">Get in touch</span>
-          <h1 className="text-[36px] sm:text-[48px] md:text-[56px] font-bold text-white leading-[115%] tracking-[-0.02em]">
-            Let&apos;s build something <span className="gradient-text">great together</span>
+          <h1 className="text-[36px] sm:text-[48px] md:text-[56px] font-bold leading-[115%] tracking-[-0.02em] shimmer-text">
+            Let&apos;s build something great together
           </h1>
           <p className="text-white/70 text-[16px] leading-[1.75] max-w-[480px]">
             Whether you have a project in mind, need support, or want to collaborate â€” our team is here to help.
@@ -400,11 +400,10 @@ function GetInTouch() {
               {/* details */}
               <div className="flex flex-col gap-3">
                 <div className="flex items-start gap-3">
-                  <img
-                    src={contactimage.icon.locationicon}
-                    alt=""
-                    className="w-[18px] h-[18px] shrink-0 mt-0.5 opacity-60"
-                  />
+                  <div className="relative shrink-0 mt-0.5 w-[18px] h-[18px]">
+                    <div className="loc-ping" />
+                    <img src={contactimage.icon.locationicon} alt="" className="w-full h-full relative z-10 opacity-70" />
+                  </div>
                   <p className="text-[#4B5563] text-[13px] leading-[1.65]">{office.address}</p>
                 </div>
                 <div className="flex items-center gap-3">

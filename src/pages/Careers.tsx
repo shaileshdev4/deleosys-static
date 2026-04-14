@@ -53,6 +53,46 @@ const culturePerks = [
   { title: "Fast-track Growth",  desc: "Clear path from junior to senior.",          icon: carrierimage.WhyJoinDeleosys.trendicon },
 ];
 
+const CAREERS_STYLES = `
+  @keyframes pulse-ring {
+    0%   { transform: scale(1);   opacity: 0.5; }
+    100% { transform: scale(1.5); opacity: 0;   }
+  }
+  .careers-pulse { position: relative; }
+  .careers-pulse::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    border: 2px solid rgba(247,147,30,0.5);
+    opacity: 0;
+    animation: pulse-ring 1.8s ease-out infinite;
+    pointer-events: none;
+  }
+  .group:hover .careers-pulse::after { opacity: 1; }
+
+  .job-card-active {
+    position: relative;
+    overflow: hidden;
+  }
+  .job-card-active::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    border-radius: 0 2px 2px 0;
+    background: linear-gradient(to bottom, #E65C00, #F7931E);
+    opacity: 0;
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: opacity 0.25s, transform 0.3s ease;
+  }
+  .job-card-active:hover::before {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+`;
+
 const FadeUp = ({ children, delay = 0 }: { children: ReactNode; delay?: number }) => {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.12 });
   return (
@@ -199,7 +239,7 @@ function WhyWorkWithUs() {
               transition={{ duration: 0.5, delay: i * 0.12 }}
               className="group bg-white rounded-2xl border border-[#1F2A44]/10 shadow-sm p-8 flex flex-col items-center text-center gap-5 hover:shadow-[0_4px_24px_rgba(230,92,0,0.14)] hover:border-[#F7931E]/30 transition-all duration-300"
             >
-              <div className="w-[72px] h-[72px] rounded-full bg-[#F7931E]/10 flex items-center justify-center group-hover:bg-[#F7931E]/20 transition-colors duration-300">
+              <div className="careers-pulse w-[72px] h-[72px] rounded-full bg-[#F7931E]/10 flex items-center justify-center group-hover:bg-[#F7931E]/20 transition-colors duration-300">
                 <img src={item.icon} alt={item.title} className="w-[36px] h-[36px]" />
               </div>
               <h3 className="text-[#1C1C1C] font-semibold text-[20px]">{item.title}</h3>
@@ -512,7 +552,7 @@ function OpenPositions() {
               initial={{ opacity: 0, y: 24 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: i * 0.08 }}
-              className="group w-full p-5 rounded-xl border border-[#1F2A44]/10 hover:border-[#F7931E]/40 hover:shadow-[0_4px_20px_rgba(230,92,0,0.1)] transition-all duration-300 bg-white"
+              className="job-card-active group w-full p-5 rounded-xl border border-[#1F2A44]/10 hover:border-[#F7931E]/40 hover:shadow-[0_4px_20px_rgba(230,92,0,0.1)] transition-all duration-300 bg-white"
             >
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div className="flex items-center gap-4">
@@ -606,6 +646,7 @@ function WhyJoinDeleosys() {
 
 const Careers = () => (
   <>
+    <style>{CAREERS_STYLES}</style>
     <CareersHero />
     <JobSearch />
     <WhyWorkWithUs />

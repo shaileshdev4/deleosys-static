@@ -1,6 +1,7 @@
 import { brandConfig } from "../../config/brandConfig";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
+import { useState, useEffect } from "react";
 
 const config = brandConfig.meta.whyChooseus;
 
@@ -21,6 +22,26 @@ const features = [
     image: config.features.deal,
   },
 ];
+
+const CountUp = ({ target, inView }: { target: number; inView: boolean }) => {
+  const [count, setCount] = useState(0);
+  useEffect(() => {
+    if (!inView) return;
+    let start = 0;
+    const step = target / 40;
+    const timer = setInterval(() => {
+      start += step;
+      if (start >= target) {
+        setCount(target);
+        clearInterval(timer);
+      } else {
+        setCount(Math.floor(start));
+      }
+    }, 35);
+    return () => clearInterval(timer);
+  }, [inView, target]);
+  return <>{count}</>;
+};
 
 const WhyChooseUs = () => {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
@@ -52,7 +73,9 @@ const WhyChooseUs = () => {
                 <span className="text-white text-[16px] font-bold">★</span>
               </div>
               <div>
-                <p className="text-[#1F2A44] font-bold text-[15px] leading-none">98% satisfaction</p>
+                <p className="text-[#1F2A44] font-bold text-[15px] leading-none">
+                  <CountUp target={98} inView={inView} />% satisfaction
+                </p>
                 <p className="text-[#9CA3AF] text-[12px] mt-0.5">across all clients</p>
               </div>
             </motion.div>

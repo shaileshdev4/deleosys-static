@@ -5,6 +5,22 @@ import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import "../../style/gloabal.css";
 
+const NAVBAR_STYLES = `
+  @keyframes nav-ping {
+    0%   { transform: scale(1);   opacity: 0.7; }
+    100% { transform: scale(1.9); opacity: 0;   }
+  }
+  .nav-ping {
+    position: absolute;
+    inset: -3px;
+    border-radius: 9999px;
+    border: 1.5px solid rgba(230,92,0,0.5);
+    animation: nav-ping 2s ease-out infinite;
+    pointer-events: none;
+  }
+  .nav-ping-2 { animation-delay: 1s; }
+`;
+
 const MobileAccordion = ({
   item,
   onClose,
@@ -190,16 +206,22 @@ const Navbar = () => {
           })}
         </nav>
 
-        {/* GET STARTED */}
-        <button
-          type="button"
-          onClick={() => navigate("/contact")}
-          className="hidden md:block p-[2px] rounded-full bg-gradient-to-r from-[#E65C00] to-[#F7931E]"
-        >
-          <span className="flex items-center justify-center h-[40px] px-4 bg-white rounded-full text-[#E65C00] font-semibold hover:bg-transparent hover:text-white transition duration-300">
-            {nav.buttons.getstarted}
-          </span>
-        </button>
+        <>
+          <style>{NAVBAR_STYLES}</style>
+          <div className="hidden md:block relative">
+            <div className="nav-ping" />
+            <div className="nav-ping nav-ping-2" />
+            <button
+              type="button"
+              onClick={() => navigate("/contact")}
+              className="relative z-10 p-[2px] rounded-full bg-gradient-to-r from-[#E65C00] to-[#F7931E]"
+            >
+              <span className="flex items-center justify-center h-[40px] px-4 bg-white rounded-full text-[#E65C00] font-semibold hover:bg-transparent hover:text-white transition duration-300">
+                {nav.buttons.getstarted}
+              </span>
+            </button>
+          </div>
+        </>
 
         {/* MOBILE ICON */}
         <div

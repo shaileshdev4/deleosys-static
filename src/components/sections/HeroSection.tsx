@@ -33,6 +33,34 @@ const slides = [
   },
 ];
 
+const CountUp = ({ target, suffix, active }: { target: number; suffix: string; active: boolean }) => {
+  const [count, setCount] = useState(0);
+  useEffect(() => {
+    if (!active) {
+      setCount(0);
+      return;
+    }
+    let start = 0;
+    const step = target / 30;
+    const timer = setInterval(() => {
+      start += step;
+      if (start >= target) {
+        setCount(target);
+        clearInterval(timer);
+      } else {
+        setCount(Math.floor(start));
+      }
+    }, 40);
+    return () => clearInterval(timer);
+  }, [active, target]);
+  return (
+    <>
+      {count}
+      {suffix}
+    </>
+  );
+};
+
 const HeroSection = () => {
   const navigate = useNavigate();
   const [current, setCurrent] = useState(0);
@@ -145,9 +173,15 @@ const HeroSection = () => {
 
             <motion.div key={`stats-${key}`} initial={{ opacity:0 }} animate={{ opacity:1 }} transition={{ duration:0.4, delay:1.0 }}
               className="flex gap-5 sm:gap-8 pt-3 border-t border-white/15 flex-wrap">
-              {[{ value:"150+", label:"Projects" },{ value:"50+", label:"Clients" },{ value:"5+", label:"Years" }].map((s, i) => (
+              {[
+                { target: 150, suffix: "+", label: "Projects" },
+                { target: 50, suffix: "+", label: "Clients" },
+                { target: 5, suffix: "+", label: "Years" },
+              ].map((s, i) => (
                 <div key={i} className="flex flex-col">
-                  <span className="text-[22px] font-bold text-white leading-none">{s.value}</span>
+                  <span className="text-[22px] font-bold text-white leading-none">
+                    <CountUp target={s.target} suffix={s.suffix} active={key > 0 || current === 0} />
+                  </span>
                   <span className="text-white/50 text-[11px] mt-1 font-medium uppercase tracking-widest">{s.label}</span>
                 </div>
               ))}

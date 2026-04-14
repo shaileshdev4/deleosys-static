@@ -27,11 +27,42 @@ const services = [
   },
 ];
 
+const STYLES = `
+  @keyframes rotate-border {
+    from { --angle: 0deg; }
+    to   { --angle: 360deg; }
+  }
+  @property --angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+  }
+  .os-card-border {
+    position: relative;
+  }
+  .os-card-border::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: 16px;
+    background: conic-gradient(from var(--angle), transparent 70%, rgba(247,147,30,0.55) 85%, transparent 100%);
+    animation: rotate-border 4s linear infinite;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    opacity: 0.5;
+    transition: opacity 0.3s;
+  }
+  .os-card-border:hover::before { opacity: 1; }
+`;
+
 const OurServices = () => {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.15 });
 
   return (
     <section className="w-full bg-white py-16 md:py-24">
+      <style>{STYLES}</style>
       <div className="max-w-[1286px] mx-auto px-6 md:px-[76px]">
 
         {/* HEADER */}
@@ -57,7 +88,7 @@ const OurServices = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: i * 0.1, ease: "easeOut" }}
-              className="group bg-white rounded-2xl border border-[#1F2A44]/10 shadow-[0_2px_16px_rgba(31,42,68,0.08)] p-8 flex flex-col items-center text-center gap-5 hover:shadow-[0_4px_24px_rgba(230,92,0,0.15)] hover:border-[#F7931E]/30 transition-all duration-300"
+              className="os-card-border group bg-white rounded-2xl border border-[#1F2A44]/10 shadow-[0_2px_16px_rgba(31,42,68,0.08)] p-8 flex flex-col items-center text-center gap-5 hover:shadow-[0_4px_24px_rgba(230,92,0,0.15)] transition-all duration-300"
             >
               {/* ICON */}
               <div className="w-[80px] h-[80px] rounded-full bg-[#F7931E]/10 flex items-center justify-center group-hover:bg-[#F7931E]/20 transition-colors duration-300">

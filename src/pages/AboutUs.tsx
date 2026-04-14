@@ -26,6 +26,31 @@ const whyChooseItems = [
   { title: "Long-term partnership mindset",       image: aboutimage.whychoose.cooperation },
 ];
 
+const ABOUT_STYLES = `
+  @keyframes orbit {
+    from { transform: rotate(0deg) translateX(50px) rotate(0deg); }
+    to   { transform: rotate(360deg) translateX(50px) rotate(-360deg); }
+  }
+  @keyframes orbit-rev {
+    from { transform: rotate(0deg) translateX(54px) rotate(0deg); }
+    to   { transform: rotate(-360deg) translateX(54px) rotate(360deg); }
+  }
+  .ab-orbit-dot {
+    position: absolute;
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: #F7931E;
+    top: 50%; left: 50%;
+    margin: -2.5px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+  }
+  .ab-orbit-dot-1 { animation: orbit 3s linear infinite; }
+  .ab-orbit-dot-2 { animation: orbit-rev 4s linear infinite; }
+  .group:hover .ab-orbit-dot { opacity: 0.65; }
+`;
+
 const FadeUp = ({ children, delay = 0 }: { children: ReactNode; delay?: number }) => {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.12 });
   return (
@@ -154,10 +179,14 @@ function WhoWeAre() {
                 transition={{ duration: 0.45, delay: i * 0.1 }}
                 className="group bg-white w-full max-w-[220px] p-6 rounded-2xl border border-[#1F2A44]/10 shadow-sm flex flex-col items-center justify-center gap-4 hover:shadow-[0_4px_20px_rgba(230,92,0,0.12)] hover:border-[#F7931E]/30 transition-all duration-300"
               >
-                <div className="w-[90px] h-[90px] rounded-full p-[2px] bg-gradient-to-r from-[#E65C00] to-[#F7931E]">
-                  <div className="w-full h-full rounded-full bg-white flex items-center justify-center group-hover:bg-orange-50 transition-colors duration-300">
-                    <Icon className="text-[#F7931E] text-[32px]" />
+                <div className="relative w-[90px] h-[90px]">
+                  <div className="w-full h-full rounded-full p-[2px] bg-gradient-to-r from-[#E65C00] to-[#F7931E]">
+                    <div className="w-full h-full rounded-full bg-white flex items-center justify-center group-hover:bg-orange-50 transition-colors duration-300">
+                      <Icon className="text-[#F7931E] text-[32px]" />
+                    </div>
                   </div>
+                  <div className="ab-orbit-dot ab-orbit-dot-1" />
+                  <div className="ab-orbit-dot ab-orbit-dot-2" />
                 </div>
                 <h3 className="text-[#1C1C1C] text-center font-medium text-[15px] leading-[1.4]">
                   {item.title}
@@ -200,10 +229,25 @@ function OurMoments() {
               </p>
               <div className="flex flex-col gap-3 mt-2 items-center md:items-start">
                 {["Building trust", "Creating opportunities", "Delivering results"].map((item, i) => (
-                  <div key={i} className="flex items-center gap-3">
-                    <BsCheckAll className="text-[#F7931E] text-[22px] shrink-0" />
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, x: -16 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true, margin: "-40px" }}
+                    transition={{ duration: 0.4, delay: i * 0.15, ease: "easeOut" }}
+                    className="flex items-center gap-3"
+                  >
+                    <motion.span
+                      initial={{ scaleX: 0 }}
+                      whileInView={{ scaleX: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.3, delay: i * 0.15 + 0.2 }}
+                      className="inline-block origin-left"
+                    >
+                      <BsCheckAll className="text-[#F7931E] text-[22px] shrink-0" />
+                    </motion.span>
                     <p className="text-[#1F2A44] text-[15px] font-medium">{item}</p>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
             </div>
@@ -273,7 +317,7 @@ function DrivenByInnovation() {
             Driven by <span className="gradient-text">Innovation</span>
           </h2>
           <div className="w-[180px] h-[4px] bg-gradient-to-r from-[#E65C00] to-[#F7931E] rounded-full" />
-          <p className="text-white/80 text-[16px] sm:text-[18px] leading-[1.75] italic">
+          <p className="text-[16px] sm:text-[18px] leading-[1.75] italic shimmer-text">
             &quot;Engineering the Future with Smart Technology&quot;
           </p>
           <p className="text-white/75 text-[15px] leading-[1.75] max-w-[560px]">
@@ -288,6 +332,7 @@ function DrivenByInnovation() {
 
 const AboutUs = () => (
   <div>
+    <style>{ABOUT_STYLES}</style>
     <AboutHero />
     <OurJourneyTeam />
     <WhoWeAre />
