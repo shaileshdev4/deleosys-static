@@ -66,7 +66,7 @@ const CultureTalent = () => {
             className="flex-1 w-full max-w-[580px] relative"
           >
             <div className="rounded-2xl overflow-hidden shadow-[0_8px_48px_rgba(31,42,68,0.12)] relative">
-              <img src={teamworkingimage} alt="Our team" className="w-full h-[420px] object-cover" />
+              <img src={teamworkingimage} alt="Our team" className="w-full h-[260px] sm:h-[360px] md:h-[420px] object-cover" />
               {/* subtle gradient overlay at bottom */}
               <div className="absolute inset-0 bg-linear-to-t from-black/30 to-transparent rounded-2xl" />
             </div>
@@ -76,7 +76,7 @@ const CultureTalent = () => {
               initial={{ opacity: 0, y: 16 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: 0.55 }}
-              className="absolute -bottom-5 -left-5 bg-white rounded-2xl shadow-[0_8px_32px_rgba(31,42,68,0.14)] px-5 py-4 border border-[#1F2A44]/10"
+              className="absolute bottom-3 left-3 sm:-bottom-5 sm:-left-5 bg-white rounded-2xl shadow-[0_8px_32px_rgba(31,42,68,0.14)] px-4 py-3 border border-[#1F2A44]/10"
             >
               <p className="stat-number text-[28px]">20+</p>
               <p className="text-[#9CA3AF] text-[12px] mt-0.5 font-medium">Team members</p>

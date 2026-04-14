@@ -302,7 +302,7 @@ function Footer() {
                 className="outline-none bg-transparent text-[#FFFFFF] text-[14px] w-full placeholder:text-[#FFFFFF]/60"
               />
 
-              <button type="button" className="btn-primary !h-[32px] !px-3 !text-[13px] shrink-0" aria-label="Subscribe">
+              <button type="button" className="btn-primary !h-[36px] !w-[36px] !px-0 !rounded-full shrink-0 flex items-center justify-center" aria-label="Subscribe">
                 →
               </button>
             </div>

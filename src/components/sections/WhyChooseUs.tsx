@@ -38,7 +38,7 @@ const WhyChooseUs = () => {
             ref={ref}
           >
             <div className="rounded-2xl overflow-hidden shadow-[0_8px_48px_rgba(31,42,68,0.12)]">
-              <img src={config.wcuimage} alt="Why choose us" className="w-full h-[420px] object-cover" />
+              <img src={config.wcuimage} alt="Why choose us" className="w-full h-[260px] sm:h-[360px] md:h-[420px] object-cover" />
             </div>
 
             {/* floating badge */}
@@ -46,7 +46,7 @@ const WhyChooseUs = () => {
               initial={{ opacity: 0, y: 16 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: 0.5 }}
-              className="absolute -bottom-5 -right-5 bg-white rounded-2xl shadow-[0_8px_32px_rgba(31,42,68,0.14)] px-5 py-4 flex items-center gap-3 border border-[#1F2A44]/10"
+              className="absolute bottom-3 right-3 sm:-bottom-5 sm:-right-5 bg-white rounded-2xl shadow-[0_8px_32px_rgba(31,42,68,0.14)] px-4 py-3 flex items-center gap-3 border border-[#1F2A44]/10"
             >
               <div className="w-10 h-10 rounded-full bg-linear-to-br from-[#E65C00] to-[#F7931E] flex items-center justify-center shrink-0">
                 <span className="text-white text-[16px] font-bold">★</span>

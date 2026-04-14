@@ -18,7 +18,7 @@ const IndustriesSupport = () => {
     <section className="w-full bg-white py-20 md:py-28">
       <div className="max-w-[1280px] mx-auto px-6 md:px-10">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row justify-between items-start gap-8 mb-14">
+        <div className="flex flex-col sm:flex-row justify-between items-start gap-6 sm:gap-8 mb-10 sm:mb-14">
           <div className="flex flex-col gap-3">
             <span className="section-label">Industries</span>
             <h2 className="text-[28px] sm:text-[34px] md:text-[40px] font-bold text-[#1F2A44] leading-[120%]">
@@ -40,7 +40,7 @@ const IndustriesSupport = () => {
               initial={{ opacity: 0, y: 32 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.55, delay: i * 0.1, ease: "easeOut" }}
-              className="group relative w-full aspect-3/4 rounded-2xl overflow-hidden cursor-pointer"
+              className="group relative w-full aspect-[3/4] min-h-[280px] rounded-2xl overflow-hidden cursor-pointer"
             >
               {/* image with zoom */}
               <img

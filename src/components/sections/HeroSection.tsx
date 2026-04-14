@@ -1,6 +1,7 @@
-﻿import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { brandConfig } from "../../config/brandConfig";
 import { motion, AnimatePresence } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import { DemoModal } from "./DemoModal";
 
 const slider = brandConfig.meta.home.hero;
@@ -33,6 +34,7 @@ const slides = [
 ];
 
 const HeroSection = () => {
+  const navigate = useNavigate();
   const [current, setCurrent] = useState(0);
   const [key, setKey]         = useState(0);
   const [demoOpen, setDemoOpen] = useState(false);
@@ -96,7 +98,7 @@ const HeroSection = () => {
 
         {/* -- Content ------------------------------------------------------ */}
         <div className="relative z-10 w-full max-w-[1280px] mx-auto flex items-center px-6 md:px-10 min-h-[520px] md:min-h-[680px]">
-          <div className="flex flex-col gap-7 max-w-[580px] text-white">
+          <div className="flex flex-col gap-5 sm:gap-7 w-full max-w-[580px] text-white">
 
             <motion.div key={`label-${key}`} initial={{ opacity:0, y:12 }} animate={{ opacity:1, y:0 }} transition={{ duration:0.4, delay:0.1 }}>
               <span className="section-label !text-white/75 !border-white/20 !bg-white/10">Digital Agency</span>
@@ -128,7 +130,13 @@ const HeroSection = () => {
                   key={i}
                   type="button"
                   className={btn.variant === "primary" ? "btn-primary" : "btn-outline"}
-                  onClick={() => (btn.label === "Request Demo" ? setDemoOpen(true) : undefined)}
+                  onClick={() => {
+                    if (btn.label === "Request Demo") {
+                      setDemoOpen(true);
+                      return;
+                    }
+                    navigate("/contact");
+                  }}
                 >
                   {btn.label}
                 </button>
@@ -136,7 +144,7 @@ const HeroSection = () => {
             </motion.div>
 
             <motion.div key={`stats-${key}`} initial={{ opacity:0 }} animate={{ opacity:1 }} transition={{ duration:0.4, delay:1.0 }}
-              className="flex gap-8 pt-3 border-t border-white/15">
+              className="flex gap-5 sm:gap-8 pt-3 border-t border-white/15 flex-wrap">
               {[{ value:"150+", label:"Projects" },{ value:"50+", label:"Clients" },{ value:"5+", label:"Years" }].map((s, i) => (
                 <div key={i} className="flex flex-col">
                   <span className="text-[22px] font-bold text-white leading-none">{s.value}</span>
@@ -147,7 +155,7 @@ const HeroSection = () => {
           </div>
         </div>
 
-        {/* -- Right visual — static position, CSS-only animation ----------- */}
+        {/* -- Right visual — hidden on mobile, shows from sm up ----------- */}
         <AnimatePresence mode="wait">
           <motion.div
             key={`visual-${current}`}
@@ -155,7 +163,7 @@ const HeroSection = () => {
             animate={{ opacity:1, x:0  }}
             exit={{    opacity:0, x:-30 }}
             transition={{ duration:0.55, delay:0.2, ease:[0.76,0,0.24,1] }}
-            className={slide.imgClass}
+            className={`hidden sm:block ${slide.imgClass}`}
           >
             {/* shimmer sweep over image */}
             <div className="relative">

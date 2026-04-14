@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { FaPlay, FaArrowRight } from "react-icons/fa";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const peopledata = brandConfig.meta.casestudy.peopleanalyzingfinance;
 
@@ -13,6 +14,7 @@ const metrics = [
 ];
 
 const CaseStudy = () => {
+  const navigate = useNavigate();
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.15 });
   const [playing, setPlaying] = useState(false);
 
@@ -40,7 +42,7 @@ const CaseStudy = () => {
             </p>
 
             {/* metrics */}
-            <div className="grid grid-cols-3 gap-4 w-full max-w-[380px] mt-2">
+            <div className="grid grid-cols-3 gap-2 sm:gap-4 w-full mt-2">
               {metrics.map((m, i) => (
                 <motion.div
                   key={i}
@@ -49,13 +51,13 @@ const CaseStudy = () => {
                   transition={{ duration: 0.45, delay: 0.3 + i * 0.1 }}
                   className="flex flex-col items-center lg:items-start gap-1 p-3 rounded-xl bg-white border border-[#1F2A44]/10 shadow-sm"
                 >
-                  <span className="stat-number text-[26px]">{m.value}</span>
+                  <span className="stat-number text-[20px] sm:text-[26px]">{m.value}</span>
                   <span className="text-[#9CA3AF] text-[11px] font-medium leading-[1.4]">{m.label}</span>
                 </motion.div>
               ))}
             </div>
 
-            <button type="button" className="btn-primary mt-2">
+            <button type="button" onClick={() => navigate("/our-products")} className="btn-primary mt-2">
               View case study <FaArrowRight className="text-[13px]" />
             </button>
           </motion.div>

@@ -6,6 +6,7 @@ import { CiGlobe } from "react-icons/ci";
 import { IoLocationOutline } from "react-icons/io5";
 import { BsCheckAll } from "react-icons/bs";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import { useInView } from "react-intersection-observer";
 
 const aboutimage = brandConfig.meta.about;
@@ -51,7 +52,7 @@ const SectionHeader = ({ title, subtitle }: { title: ReactNode; subtitle?: strin
   </div>
 );
 
-// ─── 1. Hero ──────────────────────────────────────────────────────────────────
+// â”€â”€â”€ 1. Hero â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function AboutHero() {
   return (
     <section className="relative w-full min-h-[400px] sm:min-h-[480px] lg:min-h-[564px] flex items-center justify-center overflow-hidden">
@@ -96,7 +97,7 @@ function AboutHero() {
   );
 }
 
-// ─── 2. Our Journey ───────────────────────────────────────────────────────────
+// â”€â”€â”€ 2. Our Journey â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function OurJourneyTeam() {
   return (
     <section className="w-full bg-white py-20">
@@ -126,7 +127,7 @@ function OurJourneyTeam() {
   );
 }
 
-// ─── 3. Who We Are ────────────────────────────────────────────────────────────
+// â”€â”€â”€ 3. Who We Are â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function WhoWeAre() {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
   return (
@@ -139,7 +140,7 @@ function WhoWeAre() {
                 Who We <span className="gradient-text">Are</span>
               </>
             }
-            subtitle="We are more than just a tech company — we are your growth partners."
+            subtitle="We are more than just a tech company â€” we are your growth partners."
           />
         </FadeUp>
         <div ref={ref} className="grid grid-cols-2 lg:grid-cols-4 gap-6 justify-items-center">
@@ -170,24 +171,24 @@ function WhoWeAre() {
   );
 }
 
-// ─── 4. Our Moments ───────────────────────────────────────────────────────────
+// â”€â”€â”€ 4. Our Moments â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function OurMoments() {
   return (
     <section className="w-full bg-white py-20">
       <div className="max-w-[1280px] mx-auto px-6 md:px-8">
         <FadeUp>
           <div className="flex flex-col md:flex-row items-center justify-between gap-12">
-            {/* LEFT — stacked images */}
+            {/* LEFT â€” stacked images */}
             <div className="relative w-full md:w-[560px] shrink-0">
               <div className="w-full aspect-[595/420] rounded-2xl overflow-hidden">
                 <img src={aboutimage.ourmoments.ourmomentsmillingface} alt="" className="w-full h-full object-cover" />
               </div>
-              <div className="absolute bottom-[-24px] right-[-24px] w-[220px] sm:w-[280px] rounded-xl border-[8px] border-white overflow-hidden shadow-xl">
+              <div className="absolute bottom-0 right-0 sm:bottom-[-24px] sm:right-[-24px] w-[140px] sm:w-[220px] md:w-[280px] rounded-xl border-[6px] sm:border-[8px] border-white overflow-hidden shadow-xl">
                 <img src={aboutimage.ourmoments.colleaguesworkingproject} alt="" className="w-full h-auto object-cover" />
               </div>
             </div>
 
-            {/* RIGHT — text */}
+            {/* RIGHT â€” text */}
             <div className="flex-1 max-w-[480px] flex flex-col gap-5 text-center md:text-left items-center md:items-start mt-8 md:mt-0">
               <h2 className="text-[26px] sm:text-[32px] md:text-[38px] font-bold text-[#1F2A44] leading-[1.2]">
                 Our Moments
@@ -195,7 +196,7 @@ function OurMoments() {
               </h2>
               <div className="w-[160px] h-[4px] bg-gradient-to-r from-[#E65C00] to-[#F7931E] rounded-full mx-auto md:mx-0" />
               <p className="text-[#4B5563] text-[15px] leading-[1.75]">
-                These moments reflect our journey — from client meetings to partnerships and team milestones.
+                These moments reflect our journey â€” from client meetings to partnerships and team milestones.
               </p>
               <div className="flex flex-col gap-3 mt-2 items-center md:items-start">
                 {["Building trust", "Creating opportunities", "Delivering results"].map((item, i) => (
@@ -213,19 +214,19 @@ function OurMoments() {
   );
 }
 
-// ─── 5. Why Choose ────────────────────────────────────────────────────────────
+// â”€â”€â”€ 5. Why Choose â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function WhyChooseDeleosys() {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
   return (
     <section className="w-full bg-[#FAFAFA] py-20">
       <div className="max-w-[1280px] mx-auto px-6 md:px-8">
         <FadeUp>
-          <div className="flex flex-col md:flex-row items-start justify-between gap-4 mb-12">
-            <div className="flex flex-col gap-3">
-              <h2 className="text-[26px] sm:text-[34px] font-bold text-[#1F2A44]">Why Choose Deleosys?</h2>
+          <div className="flex flex-col md:flex-row items-start justify-between gap-4 mb-8 sm:mb-12">
+            <div className="flex flex-col gap-3 text-center md:text-left items-center md:items-start">
+              <h2 className="text-[24px] sm:text-[34px] font-bold text-[#1F2A44]">Why Choose Deleosys?</h2>
               <div className="w-[160px] h-[4px] bg-gradient-to-r from-[#E65C00] to-[#F7931E] rounded-full" />
             </div>
-            <p className="text-[#4B5563] text-[15px] leading-[1.75] max-w-[460px]">
+            <p className="text-[#4B5563] text-[15px] leading-[1.75] max-w-[460px] text-center md:text-left">
               We focus on delivering practical, scalable solutions that align with your business goals and drive measurable results.
             </p>
           </div>
@@ -259,8 +260,9 @@ function WhyChooseDeleosys() {
   );
 }
 
-// ─── 6. Driven by Innovation ──────────────────────────────────────────────────
+// â”€â”€â”€ 6. Driven by Innovation â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function DrivenByInnovation() {
+  const navigate = useNavigate();
   return (
     <section className="relative w-full py-24 flex items-center justify-center overflow-hidden">
       <img src={aboutimage.DrivenbyInnovation.businesspeople} alt="" className="absolute inset-0 w-full h-full object-cover" />
@@ -275,11 +277,9 @@ function DrivenByInnovation() {
             &quot;Engineering the Future with Smart Technology&quot;
           </p>
           <p className="text-white/75 text-[15px] leading-[1.75] max-w-[560px]">
-            We don&apos;t just build software — we build solutions that solve real business problems.
+            We don&apos;t just build software â€” we build solutions that solve real business problems.
           </p>
-          <button type="button" className="mt-2 inline-flex items-center gap-2 px-6 h-[52px] bg-gradient-to-r from-[#E65C00] to-[#F7931E] text-white font-semibold rounded-full hover:scale-105 hover:shadow-lg hover:shadow-orange-500/30 transition-all duration-300">
-            Contact Us
-          </button>
+          <button type="button" onClick={() => navigate("/contact")} className="mt-2 inline-flex items-center gap-2 px-6 h-[52px] bg-gradient-to-r from-[#E65C00] to-[#F7931E] text-white font-semibold rounded-full hover:scale-105 hover:shadow-lg hover:shadow-orange-500/30 transition-all duration-300">Contact Us</button>
         </div>
       </FadeUp>
     </section>
@@ -298,3 +298,4 @@ const AboutUs = () => (
 );
 
 export default AboutUs;
+

@@ -2,7 +2,7 @@ import { brandConfig } from "../config/brandConfig";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { FaArrowRight } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const icons = brandConfig.meta.contact.images;
 
@@ -13,6 +13,7 @@ const perks = [
 ];
 
 const ContactUs = () => {
+  const navigate = useNavigate();
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.15 });
 
   return (
@@ -84,19 +85,19 @@ const ContactUs = () => {
                 <input
                   type="text"
                   placeholder="Your name"
-                  className="w-full bg-white/10 border border-white/15 rounded-xl px-4 py-3 text-[14px] text-white placeholder:text-white/35 outline-none focus:border-[#F7931E]/60 focus:bg-white/12 transition-all duration-200"
+                  className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-[14px] text-white placeholder:text-white/40 outline-none focus:border-[#F7931E] transition-all duration-200"
                 />
                 <input
                   type="email"
                   placeholder="Work email address"
-                  className="w-full bg-white/10 border border-white/15 rounded-xl px-4 py-3 text-[14px] text-white placeholder:text-white/35 outline-none focus:border-[#F7931E]/60 focus:bg-white/12 transition-all duration-200"
+                  className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-[14px] text-white placeholder:text-white/40 outline-none focus:border-[#F7931E] transition-all duration-200"
                 />
                 <textarea
                   placeholder="Tell us about your project..."
                   rows={3}
-                  className="w-full bg-white/10 border border-white/15 rounded-xl px-4 py-3 text-[14px] text-white placeholder:text-white/35 outline-none focus:border-[#F7931E]/60 focus:bg-white/12 transition-all duration-200 resize-none"
+                  className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-[14px] text-white placeholder:text-white/40 outline-none focus:border-[#F7931E] transition-all duration-200 resize-none"
                 />
-                <button type="button" className="btn-primary w-full justify-center">
+                <button type="button" onClick={() => navigate("/contact")} className="btn-primary w-full justify-center">
                   Send message <FaArrowRight className="text-[13px]" />
                 </button>
               </div>
