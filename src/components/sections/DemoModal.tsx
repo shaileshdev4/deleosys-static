@@ -27,6 +27,7 @@ export const DemoModal = ({ isOpen, onClose }: DemoModalProps) => {
   const [step, setStep] = useState<1 | 2>(1);
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
   const [form, setForm] = useState({
     fullName: "",
@@ -46,15 +47,18 @@ export const DemoModal = ({ isOpen, onClose }: DemoModalProps) => {
   const handleSubmit = async () => {
     if (!step2Valid) return;
     setLoading(true);
+    setError(null);
     try {
-      await fetch(`${import.meta.env.VITE_API_URL}/api/demo`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/demo`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...form, slot: selectedSlot }),
       });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Booking failed");
       setSubmitted(true);
-    } catch {
-      setSubmitted(true);
+    } catch (err: any) {
+      setError(err.message || "Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -66,6 +70,7 @@ export const DemoModal = ({ isOpen, onClose }: DemoModalProps) => {
       setStep(1);
       setSubmitted(false);
       setSelectedSlot(null);
+      setError(null);
       setForm({ fullName: "", company: "", email: "", phone: "", date: "" });
     }, 300);
   };
@@ -296,6 +301,12 @@ export const DemoModal = ({ isOpen, onClose }: DemoModalProps) => {
                         </div>
                         <p className="text-[11px] text-[#9CA3AF] mt-2">All times are in IST (India Standard Time)</p>
                       </div>
+
+                      {error && (
+                        <div className="px-4 py-3 rounded-xl bg-red-50 border border-red-200 text-red-600 text-[13px]">
+                          {error}
+                        </div>
+                      )}
 
                       <div className="flex gap-3 mt-1">
                         <button onClick={() => setStep(1)} className="btn-outline-dark flex-1 justify-center">

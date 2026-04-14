@@ -1,9 +1,11 @@
-import type { ReactNode } from "react";
+import { useState, useEffect, type ReactNode } from "react";
 import { brandConfig } from "../config/brandConfig";
-import { IoSearchOutline, IoLocationOutline } from "react-icons/io5";
+import { IoSearchOutline } from "react-icons/io5";
 import { FaGlobeAmericas, FaAngleDown } from "react-icons/fa";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useInView } from "react-intersection-observer";
+import { FaTimes, FaCheckCircle } from "react-icons/fa";
+import { FiUser, FiMail, FiPhone, FiLinkedin } from "react-icons/fi";
 
 const carrierimage = brandConfig.meta.carrier;
 
@@ -13,13 +15,37 @@ const whyWorkItems = [
   { title: "Thrive",    desc: "Be part of a supportive and inclusive culture.",                icon: carrierimage.Taketheright.groupicon },
 ];
 
-const jobListings = [
-  { title: "Full Stack Developer",  type: "Full-time", location: "Remote",  salary: "₹8–14 LPA" },
-  { title: "UI/UX Designer",        type: "Full-time", location: "Hybrid",  salary: "₹6–10 LPA" },
-  { title: "DevOps Engineer",       type: "Full-time", location: "Remote",  salary: "₹10–18 LPA" },
-];
+const daysAgo = (dateStr: string) => {
+  const diff = Date.now() - new Date(dateStr).getTime();
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  if (days === 0) return "Today";
+  if (days === 1) return "1 day ago";
+  return `${days} days ago`;
+};
 
-/** brandConfig.carrier.WhyJoinDeleosys has no growthicon — use distinct assets */
+interface Job {
+  id: number;
+  title: string;
+  department: string;
+  type: string;
+  location: string;
+  salaryMin: number | null;
+  salaryMax: number | null;
+  description: string;
+  requirements: string;
+  createdAt: string;
+}
+
+interface ApplyForm {
+  fullName: string;
+  email: string;
+  phone: string;
+  linkedin: string;
+  portfolio: string;
+  coverLetter: string;
+}
+
+/** brandConfig.carrier.WhyJoinDeleosys has no growthicon â€” use distinct assets */
 const culturePerks = [
   { title: "Flexible Hours",     desc: "Work when you're most productive.",          icon: carrierimage.WhyJoinDeleosys.devlopmenticon },
   { title: "Learning Budget",    desc: "Courses, books, and conferences covered.",   icon: carrierimage.WhyJoinDeleosys.gifticon },
@@ -53,7 +79,7 @@ const SectionHeader = ({ title, subtitle }: { title: ReactNode; subtitle?: strin
   </div>
 );
 
-// ─── 1. Hero ──────────────────────────────────────────────────────────────────
+// â”€â”€â”€ 1. Hero â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function CareersHero() {
   return (
     <section className="relative w-full min-h-[400px] sm:min-h-[480px] lg:min-h-[564px] flex items-center justify-center overflow-hidden">
@@ -87,6 +113,7 @@ function CareersHero() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.5 }}
+            onClick={() => document.getElementById("open-positions")?.scrollIntoView({ behavior: "smooth", block: "start" })}
             className="flex items-center gap-2 px-6 h-[52px] w-fit rounded-full bg-gradient-to-r from-[#E65C00] to-[#F7931E] text-white font-semibold text-[15px] hover:scale-105 hover:shadow-lg hover:shadow-orange-500/30 transition-all duration-300"
           >
             Explore Opportunities
@@ -107,7 +134,7 @@ function CareersHero() {
   );
 }
 
-// ─── 2. Job Search Bar ────────────────────────────────────────────────────────
+// â”€â”€â”€ 2. Job Search Bar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function JobSearch() {
   return (
     <section className="w-full bg-white py-16">
@@ -125,13 +152,13 @@ function JobSearch() {
 
       <FadeUp delay={0.1}>
         <div className="mt-8 w-full bg-[#FFF7EF] py-6 px-4">
-          <div className="flex flex-wrap items-center justify-center gap-3 max-w-[1200px] mx-auto">
+          <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-3 max-w-[1200px] mx-auto px-4">
             {[
               { label: "Country",          icon: <FaGlobeAmericas className="text-orange-500 text-[18px]" /> },
               { label: "Location",         icon: <FaGlobeAmericas className="text-[#1F2A44] text-[18px]" /> },
               { label: "All Technologies", icon: <FaGlobeAmericas className="text-[#1F2A44] text-[18px]" /> },
             ].map((filter, i) => (
-              <div key={i} className="flex items-center justify-between w-[200px] h-[48px] px-4 rounded-xl border border-[#1F2A44]/15 bg-white">
+              <div key={i} className="flex items-center justify-between w-full sm:w-[200px] h-[48px] px-4 rounded-xl border border-[#1F2A44]/15 bg-white">
                 <div className="flex items-center gap-2">
                   {filter.icon}
                   <span className="text-[13px] text-[#1C1C1C]">{filter.label}</span>
@@ -139,13 +166,11 @@ function JobSearch() {
                 <FaAngleDown className="text-[#1C1C1C] text-[14px]" />
               </div>
             ))}
-            <div className="flex items-center justify-between w-[200px] h-[48px] px-4 rounded-xl border border-[#1F2A44]/15 bg-white">
+            <div className="flex items-center justify-between w-full sm:w-[200px] h-[48px] px-4 rounded-xl border border-[#1F2A44]/15 bg-white">
               <span className="text-[13px] text-[#1C1C1C]">Search Jobs</span>
               <IoSearchOutline className="text-orange-500 text-[18px]" />
             </div>
-            <button type="button" className="flex items-center gap-2 px-5 h-[48px] rounded-full bg-gradient-to-r from-[#E65C00] to-[#F7931E] text-white text-[14px] font-medium hover:scale-105 transition-all duration-300">
-              Search <IoSearchOutline className="text-[16px]" />
-            </button>
+            <button type="button" onClick={() => document.getElementById("open-positions")?.scrollIntoView({ behavior: "smooth", block: "start" })} className="flex items-center gap-2 px-5 h-[48px] rounded-full bg-gradient-to-r from-[#E65C00] to-[#F7931E] text-white text-[14px] font-medium hover:scale-105 transition-all duration-300">Search <IoSearchOutline className="text-[16px]" /></button>
           </div>
         </div>
       </FadeUp>
@@ -153,7 +178,7 @@ function JobSearch() {
   );
 }
 
-// ─── 3. Why Work With Us ──────────────────────────────────────────────────────
+// â”€â”€â”€ 3. Why Work With Us â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function WhyWorkWithUs() {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
   return (
@@ -187,11 +212,263 @@ function WhyWorkWithUs() {
   );
 }
 
-// ─── 4. Open Positions ────────────────────────────────────────────────────────
-function OpenPositions() {
-  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
+// â”€â”€â”€ 4. Open Positions â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+const ApplyModal = ({ job, onClose }: { job: Job; onClose: () => void }) => {
+  const [form, setForm] = useState<ApplyForm>({
+    fullName: "",
+    email: "",
+    phone: "",
+    linkedin: "",
+    portfolio: "",
+    coverLetter: "",
+  });
+  const [loading, setLoading] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const update = (f: keyof ApplyForm, v: string) => setForm((p) => ({ ...p, [f]: v }));
+  const isValid = form.fullName.trim() && form.email.includes("@") && form.phone.trim().length >= 10;
+
+  const handleSubmit = async () => {
+    if (!isValid) return;
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/careers/apply`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...form, jobId: job.id }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Submission failed");
+      setSubmitted(true);
+    } catch (err: any) {
+      setError(err.message || "Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const inputCls =
+    "input-glow w-full border border-[#E5E7EB] rounded-xl px-4 py-3 text-[14px] text-[#1F2A44] placeholder:text-[#9CA3AF] transition outline-none";
+  const labelCls = "text-[#1C1C1C] text-[13px] font-semibold mb-1.5 block";
+
   return (
-    <section className="w-full bg-white py-20">
+    <AnimatePresence>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        onClick={onClose}
+        className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100]"
+      />
+      <motion.div
+        initial={{ opacity: 0, scale: 0.94, y: 24 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.94, y: 16 }}
+        transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+        className="fixed inset-0 z-[101] flex items-center justify-center px-4 pointer-events-none"
+      >
+        <div
+          onClick={(e) => e.stopPropagation()}
+          className="pointer-events-auto w-full max-w-[540px] bg-white rounded-2xl shadow-[0_24px_80px_rgba(0,0,0,0.18)] overflow-hidden max-h-[90vh] overflow-y-auto"
+        >
+          <div className="px-5 sm:px-8 pt-6 pb-5 border-b border-[#F3F4F6] flex items-start justify-between">
+            <div>
+              <span className="section-label mb-2 inline-flex">Apply Now</span>
+              <h2 className="text-[20px] font-bold text-[#1F2A44] mt-2">{job.title}</h2>
+              <p className="text-[#6B7280] text-[13px] mt-0.5">
+                {job.department} · {job.type} · {job.location}
+              </p>
+            </div>
+            <button
+              onClick={onClose}
+              className="w-8 h-8 rounded-full bg-[#F3F4F6] flex items-center justify-center hover:bg-[#E5E7EB] transition-colors shrink-0 mt-1"
+            >
+              <FaTimes className="text-[#6B7280] text-[12px]" />
+            </button>
+          </div>
+
+          <div className="px-5 sm:px-8 py-5 sm:py-6">
+            {submitted ? (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="flex flex-col items-center text-center gap-4 py-10"
+              >
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ type: "spring", stiffness: 200, delay: 0.1 }}
+                  className="w-16 h-16 rounded-full bg-green-50 flex items-center justify-center"
+                >
+                  <FaCheckCircle className="text-green-500 text-[32px]" />
+                </motion.div>
+                <h3 className="text-[18px] font-bold text-[#1F2A44]">Application Submitted!</h3>
+                <p className="text-[#6B7280] text-[14px] leading-[1.7] max-w-[320px]">
+                  Thanks <strong>{form.fullName}</strong>! We&apos;ve received your application for{" "}
+                  <strong>{job.title}</strong>. We&apos;ll be in touch within 3-5 business days.
+                </p>
+                <button onClick={onClose} className="btn-primary mt-2">
+                  Close
+                </button>
+              </motion.div>
+            ) : (
+              <div className="flex flex-col gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className={labelCls}>
+                      Full Name <span className="text-[#EF4444]">*</span>
+                    </label>
+                    <div className="relative">
+                      <FiUser className="absolute left-4 top-1/2 -translate-y-1/2 text-[#9CA3AF] text-[15px]" />
+                      <input
+                        type="text"
+                        placeholder="John Smith"
+                        value={form.fullName}
+                        onChange={(e) => update("fullName", e.target.value)}
+                        className={`${inputCls} pl-10`}
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className={labelCls}>
+                      Phone <span className="text-[#EF4444]">*</span>
+                    </label>
+                    <div className="relative">
+                      <FiPhone className="absolute left-4 top-1/2 -translate-y-1/2 text-[#9CA3AF] text-[15px]" />
+                      <input
+                        type="tel"
+                        placeholder="+91 98765 43210"
+                        value={form.phone}
+                        onChange={(e) => update("phone", e.target.value)}
+                        className={`${inputCls} pl-10`}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <label className={labelCls}>
+                    Email Address <span className="text-[#EF4444]">*</span>
+                  </label>
+                  <div className="relative">
+                    <FiMail className="absolute left-4 top-1/2 -translate-y-1/2 text-[#9CA3AF] text-[15px]" />
+                    <input
+                      type="email"
+                      placeholder="john@company.com"
+                      value={form.email}
+                      onChange={(e) => update("email", e.target.value)}
+                      className={`${inputCls} pl-10`}
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className={labelCls}>
+                      LinkedIn <span className="text-[#9CA3AF] font-normal">(optional)</span>
+                    </label>
+                    <div className="relative">
+                      <FiLinkedin className="absolute left-4 top-1/2 -translate-y-1/2 text-[#9CA3AF] text-[15px]" />
+                      <input
+                        type="url"
+                        placeholder="linkedin.com/in/..."
+                        value={form.linkedin}
+                        onChange={(e) => update("linkedin", e.target.value)}
+                        className={`${inputCls} pl-10`}
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className={labelCls}>
+                      Portfolio <span className="text-[#9CA3AF] font-normal">(optional)</span>
+                    </label>
+                    <input
+                      type="url"
+                      placeholder="yourportfolio.com"
+                      value={form.portfolio}
+                      onChange={(e) => update("portfolio", e.target.value)}
+                      className={inputCls}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className={labelCls}>
+                    Cover Letter <span className="text-[#9CA3AF] font-normal">(optional)</span>
+                  </label>
+                  <textarea
+                    rows={4}
+                    placeholder="Tell us why you'd be a great fit..."
+                    value={form.coverLetter}
+                    onChange={(e) => update("coverLetter", e.target.value)}
+                    className={`${inputCls} resize-none`}
+                  />
+                </div>
+
+                {error && (
+                  <div className="px-4 py-3 rounded-xl bg-red-50 border border-red-200 text-red-600 text-[13px]">
+                    {error}
+                  </div>
+                )}
+
+                <button
+                  type="button"
+                  onClick={handleSubmit}
+                  disabled={!isValid || loading}
+                  className={`btn-primary w-full justify-center mt-1 ${!isValid || loading ? "opacity-50 cursor-not-allowed" : ""}`}
+                >
+                  {loading ? (
+                    <span className="flex items-center gap-2">
+                      <motion.span
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
+                        className="inline-block w-4 h-4 border-2 border-white/40 border-t-white rounded-full"
+                      />
+                      Submitting...
+                    </span>
+                  ) : (
+                    "Submit Application ✓"
+                  )}
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      </motion.div>
+    </AnimatePresence>
+  );
+};
+
+function OpenPositions() {
+  const [jobs, setJobs] = useState<Job[]>([]);
+  const [loadingJobs, setLoadingJobs] = useState(true);
+  const [fetchError, setFetchError] = useState<string | null>(null);
+  const [applyJob, setApplyJob] = useState<Job | null>(null);
+  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
+
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_API_URL}/api/careers`)
+      .then((r) => r.json())
+      .then((d) => {
+        setJobs(d.data || []);
+        setLoadingJobs(false);
+      })
+      .catch(() => {
+        setFetchError("Could not load jobs. Please refresh.");
+        setLoadingJobs(false);
+      });
+  }, []);
+
+  const formatSalary = (min: number | null, max: number | null) => {
+    if (!min && !max) return "Competitive";
+    if (min && max) return `₹${Math.round(min / 100000)}-${Math.round(max / 100000)} LPA`;
+    return `₹${Math.round((min || max || 0) / 100000)} LPA`;
+  };
+
+  return (
+    <section id="open-positions" className="w-full bg-white py-20">
       <div className="max-w-[1286px] mx-auto px-6 md:px-[76px]">
         <FadeUp>
           <SectionHeader
@@ -203,52 +480,90 @@ function OpenPositions() {
             subtitle="Be part of a team where innovation, growth, and collaboration shape meaningful careers."
           />
         </FadeUp>
-        <div ref={ref} className="flex flex-col md:flex-row gap-6 justify-center">
-          {jobListings.map((job, i) => (
+
+        {loadingJobs && (
+          <div className="flex justify-center py-16">
             <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 28 }}
+              animate={{ rotate: 360 }}
+              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+              className="w-8 h-8 border-2 border-[#F7931E]/30 border-t-[#F7931E] rounded-full"
+            />
+          </div>
+        )}
+
+        {fetchError && <div className="text-center py-12 text-[#EF4444] text-[14px]">{fetchError}</div>}
+
+        {!loadingJobs && !fetchError && jobs.length === 0 && (
+          <div className="text-center py-16">
+            <p className="text-[#9CA3AF] text-[16px]">No open positions right now.</p>
+            <p className="text-[#9CA3AF] text-[14px] mt-2">
+              Check back soon or send us your resume at{" "}
+              <a href="mailto:info@deleosys.com" className="text-[#E65C00] hover:underline">
+                info@deleosys.com
+              </a>
+            </p>
+          </div>
+        )}
+
+        <div ref={ref} className="flex flex-col gap-4">
+          {jobs.map((job, i) => (
+            <motion.div
+              key={job.id}
+              initial={{ opacity: 0, y: 24 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="group w-full max-w-[390px] p-5 rounded-xl border border-[#1F2A44]/10 hover:border-[#F7931E]/40 hover:shadow-[0_4px_20px_rgba(230,92,0,0.1)] transition-all duration-300"
+              transition={{ duration: 0.5, delay: i * 0.08 }}
+              className="group w-full p-5 rounded-xl border border-[#1F2A44]/10 hover:border-[#F7931E]/40 hover:shadow-[0_4px_20px_rgba(230,92,0,0.1)] transition-all duration-300 bg-white"
             >
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-[48px] h-[48px] rounded-full bg-[#F7931E]/10 flex items-center justify-center shrink-0">
-                  <img src={carrierimage.WhyJoinDeleosys.devlopmenticon} alt="" className="w-[24px] h-[24px]" />
-                </div>
-                <div>
-                  <h3 className="text-[#1F2A44] font-semibold text-[17px] leading-[1.2]">{job.title}</h3>
-                  <span className="inline-block px-2 py-0.5 rounded-md bg-[#E5F7EE] text-[#16A34A] text-[12px] font-medium mt-1">
-                    {job.type}
-                  </span>
-                </div>
-                <div className="ml-auto flex items-center gap-1.5">
-                  <div className="w-[28px] h-[28px] rounded-md bg-[#EAF2FF] flex items-center justify-center">
-                    <IoLocationOutline className="text-[#2563EB] text-[16px]" />
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="flex items-center gap-4">
+                  <div className="w-[48px] h-[48px] rounded-full bg-[#F7931E]/10 flex items-center justify-center shrink-0">
+                    <img src={carrierimage.WhyJoinDeleosys.devlopmenticon} alt="" className="w-[24px] h-[24px]" />
                   </div>
-                  <span className="text-[#2563EB] text-[12px] font-medium">{job.location}</span>
+                  <div>
+                    <h3 className="text-[#1F2A44] font-semibold text-[17px] leading-[1.2]">{job.title}</h3>
+                    <div className="flex items-center gap-2 mt-1 flex-wrap">
+                      <span className="px-2 py-0.5 rounded-md bg-[#E5F7EE] text-[#16A34A] text-[11px] font-medium">
+                        {job.type}
+                      </span>
+                      <span className="px-2 py-0.5 rounded-md bg-[#EAF2FF] text-[#2563EB] text-[11px] font-medium">
+                        {job.location}
+                      </span>
+                      <span className="px-2 py-0.5 rounded-md bg-[#F3F4F6] text-[#6B7280] text-[11px] font-medium">
+                        {job.department}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3 sm:gap-4 sm:shrink-0 flex-wrap">
+                  <div className="flex flex-col items-end">
+                    <span className="text-[#1F2A44] font-semibold text-[14px]">
+                      {formatSalary(job.salaryMin, job.salaryMax)}
+                    </span>
+                    <span className="text-[#9CA3AF] text-[11px] mt-0.5">Posted {daysAgo(job.createdAt)}</span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setApplyJob(job)}
+                    className="btn-primary !h-[38px] !px-5 !text-[13px] shrink-0"
+                  >
+                    Apply Now
+                  </button>
                 </div>
               </div>
-              <p className="text-[#9CA3AF] text-[13px] leading-[1.6] mb-4">
-                Office operations & communication. Handle queries & coordination. Support in implementation. Experience required.
-              </p>
-              <div className="flex items-center justify-between">
-                <span className="px-3 py-1 rounded-lg bg-[#F3F4F6] text-[#1C1C1C] text-[13px] font-medium">
-                  {job.salary}
-                </span>
-                <button type="button" className="flex items-center gap-1.5 px-4 h-[36px] rounded-full bg-gradient-to-r from-[#E65C00] to-[#F7931E] text-white text-[13px] font-medium hover:scale-105 transition-all duration-300">
-                  Apply Now
-                </button>
-              </div>
+
+              <p className="text-[#9CA3AF] text-[13px] leading-[1.65] mt-3 line-clamp-2">{job.description}</p>
             </motion.div>
           ))}
         </div>
       </div>
+
+      <AnimatePresence>{applyJob && <ApplyModal job={applyJob} onClose={() => setApplyJob(null)} />}</AnimatePresence>
     </section>
   );
 }
 
-// ─── 5. Why Join ──────────────────────────────────────────────────────────────
+// â”€â”€â”€ 5. Why Join â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function WhyJoinDeleosys() {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
   return (
@@ -300,3 +615,4 @@ const Careers = () => (
 );
 
 export default Careers;
+

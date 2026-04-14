@@ -80,35 +80,65 @@ function ContactHero() {
 function ContactForm() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const icons = brandConfig.meta.contact.images;
+  const logo = brandConfig.meta.companylogo;
 
-  const handleSubmit = () => {
+  const [form, setForm] = useState({
+    fullName: "",
+    lastName: "",
+    email: "",
+    company: "",
+    service: "",
+    challenge: "",
+    newsletter: false,
+  });
+
+  const update = (field: string, value: string | boolean) => setForm((p) => ({ ...p, [field]: value }));
+
+  const isValid =
+    form.fullName.trim() &&
+    form.lastName.trim() &&
+    form.email.includes("@") &&
+    form.challenge.trim().length >= 10 &&
+    form.service;
+
+  const handleSubmit = async () => {
+    if (!isValid) return;
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
+    setError(null);
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/contact`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Submission failed");
       setSubmitted(true);
-    }, 1400);
+    } catch (err: any) {
+      setError(err.message || "Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <section className="w-full bg-white py-20 md:py-28">
       <div className="max-w-[1280px] mx-auto px-6 md:px-10">
         <div className="flex flex-col lg:flex-row gap-14 lg:gap-20 items-start">
-          {/* LEFT â€” CTA copy */}
           <FadeUp>
-            <div className="flex-1 max-w-[440px] flex flex-col gap-7 lg:sticky lg:top-28">
-
+            <div className="w-full lg:flex-1 lg:max-w-[440px] flex flex-col gap-7 lg:sticky lg:top-28">
+              <img src={logo} alt="Deleosys" className="w-[160px] h-auto" />
               <div className="flex flex-col gap-3">
                 <h2 className="text-[28px] sm:text-[34px] font-bold text-[#1F2A44] leading-[1.2]">
                   Let&apos;s build <span className="gradient-text">What&apos;s next</span>
                 </h2>
                 <div className="gradient-divider w-[140px]" />
                 <p className="text-[#4B5563] text-[15px] leading-[1.75]">
-                  Whether you&apos;re building from scratch or transforming an existing business, we&apos;re here to help you
-                  move forward.
+                  Whether you&apos;re building from scratch or transforming an existing business, we&apos;re here to help.
                 </p>
               </div>
-
               <div className="flex flex-col gap-4">
                 {[
                   { icon: icons.bulb, label: "Consulting & Development" },
@@ -123,8 +153,6 @@ function ContactForm() {
                   </div>
                 ))}
               </div>
-
-              {/* contact quick links */}
               <div className="flex flex-col gap-3 pt-4 border-t border-[#1F2A44]/10">
                 <a
                   href="mailto:info@deleosys.com"
@@ -144,10 +172,8 @@ function ContactForm() {
             </div>
           </FadeUp>
 
-          {/* RIGHT â€” form */}
           <FadeUp delay={0.15}>
-            <div className="flex-1 w-full max-w-[660px] bg-white rounded-2xl border border-[#1F2A44]/10 shadow-[0_8px_48px_rgba(31,42,68,0.1)] p-8 md:p-10">
-              {/* success state */}
+            <div className="w-full lg:flex-1 lg:max-w-[660px] bg-white rounded-2xl border border-[#1F2A44]/10 shadow-[0_8px_48px_rgba(31,42,68,0.1)] p-5 sm:p-8 md:p-10">
               {submitted ? (
                 <motion.div
                   initial={{ opacity: 0, scale: 0.95 }}
@@ -162,7 +188,22 @@ function ContactForm() {
                   <p className="text-[#4B5563] text-[15px] leading-[1.7] max-w-[340px]">
                     We&apos;ll get back to you within 24 hours. Looking forward to working with you.
                   </p>
-                  <button type="button" onClick={() => setSubmitted(false)} className="btn-outline-dark mt-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSubmitted(false);
+                      setForm({
+                        fullName: "",
+                        lastName: "",
+                        email: "",
+                        company: "",
+                        service: "",
+                        challenge: "",
+                        newsletter: false,
+                      });
+                    }}
+                    className="btn-outline-dark mt-2"
+                  >
                     Send another message
                   </button>
                 </motion.div>
@@ -171,39 +212,41 @@ function ContactForm() {
                   <h3 className="text-[20px] font-bold text-[#1F2A44] mb-6">Tell us about your project</h3>
 
                   <div className="flex flex-col gap-5">
-                    {/* challenge */}
                     <div className="flex flex-col gap-1.5">
                       <label className="text-[#1C1C1C] text-[13px] font-semibold">
                         Your challenge or goal <span className="text-[#EF4444]">*</span>
                       </label>
                       <textarea
-                        placeholder="Briefly describe what you're looking to build or improve"
                         rows={3}
+                        maxLength={300}
+                        placeholder="Briefly describe what you're looking to build or improve"
+                        value={form.challenge}
+                        onChange={(e) => update("challenge", e.target.value)}
                         className="input-glow w-full border border-[#E5E7EB] rounded-xl px-4 py-3 text-[14px] text-[#4B5563] placeholder:text-[#9CA3AF] resize-none transition"
                       />
-                      <p className="text-[11px] text-[#9CA3AF] text-right">max 300 characters</p>
+                      <p className="text-[11px] text-[#9CA3AF] text-right">{form.challenge.length}/300</p>
                     </div>
 
-                    {/* name row */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      {[
-                        { label: "First Name", placeholder: "Enter your first name", required: true },
-                        { label: "Last Name", placeholder: "Enter your last name", required: true },
-                      ].map((f, i) => (
-                        <div key={i} className="flex flex-col gap-1.5">
+                      {([
+                        { label: "First Name", field: "fullName", placeholder: "Enter your first name" },
+                        { label: "Last Name", field: "lastName", placeholder: "Enter your last name" },
+                      ] as const).map((f) => (
+                        <div key={f.field} className="flex flex-col gap-1.5">
                           <label className="text-[#1C1C1C] text-[13px] font-semibold">
-                            {f.label} {f.required && <span className="text-[#EF4444]">*</span>}
+                            {f.label} <span className="text-[#EF4444]">*</span>
                           </label>
                           <input
                             type="text"
                             placeholder={f.placeholder}
+                            value={form[f.field]}
+                            onChange={(e) => update(f.field, e.target.value)}
                             className="input-glow w-full border border-[#E5E7EB] rounded-xl px-4 py-3 text-[14px] text-[#4B5563] placeholder:text-[#9CA3AF] transition"
                           />
                         </div>
                       ))}
                     </div>
 
-                    {/* email + company row */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div className="flex flex-col gap-1.5">
                         <label className="text-[#1C1C1C] text-[13px] font-semibold">
@@ -212,6 +255,8 @@ function ContactForm() {
                         <input
                           type="email"
                           placeholder="Enter your work email"
+                          value={form.email}
+                          onChange={(e) => update("email", e.target.value)}
                           className="input-glow w-full border border-[#E5E7EB] rounded-xl px-4 py-3 text-[14px] text-[#4B5563] placeholder:text-[#9CA3AF] transition"
                         />
                       </div>
@@ -220,32 +265,38 @@ function ContactForm() {
                         <input
                           type="text"
                           placeholder="Company or organization name"
+                          value={form.company}
+                          onChange={(e) => update("company", e.target.value)}
                           className="input-glow w-full border border-[#E5E7EB] rounded-xl px-4 py-3 text-[14px] text-[#4B5563] placeholder:text-[#9CA3AF] transition"
                         />
                       </div>
                     </div>
 
-                    {/* service select */}
                     <div className="flex flex-col gap-1.5">
                       <label className="text-[#1C1C1C] text-[13px] font-semibold">
                         Service needed <span className="text-[#EF4444]">*</span>
                       </label>
-                      <select className="input-glow w-full border border-[#E5E7EB] rounded-xl px-4 py-3 text-[14px] text-[#4B5563] bg-white transition">
+                      <select
+                        value={form.service}
+                        onChange={(e) => update("service", e.target.value)}
+                        className="input-glow w-full border border-[#E5E7EB] rounded-xl px-4 py-3 text-[14px] text-[#4B5563] bg-white transition"
+                      >
                         <option value="">Select a service</option>
                         <option>Web Development</option>
                         <option>App Development</option>
-                        <option>AI & Automation</option>
+                        <option>AI &amp; Automation</option>
                         <option>Cyber Security</option>
                         <option>Custom Software</option>
                         <option>Consulting</option>
                       </select>
                     </div>
 
-                    {/* checkbox */}
                     <label className="flex items-start gap-3 cursor-pointer">
                       <input
                         type="checkbox"
-                        className="mt-1 h-4 w-4 shrink-0 rounded border-[#9E9E9E] text-[#F37021] accent-[#F37021]"
+                        checked={form.newsletter}
+                        onChange={(e) => update("newsletter", e.target.checked)}
+                        className="mt-1 h-4 w-4 shrink-0 rounded border-[#9E9E9E] accent-[#F37021]"
                       />
                       <span className="text-[13px] text-[#4B5563] leading-[1.6]">
                         I&apos;d like to receive occasional emails with insights, updates, and useful resources.
@@ -257,18 +308,20 @@ function ContactForm() {
                       <a href="#" className="text-[#1C1C1C] underline hover:text-[#F37021] transition">
                         Privacy Policy
                       </a>
-                      . This site is protected by reCAPTCHA and subject to the{" "}
-                      <a href="#" className="text-[#1C1C1C] underline hover:text-[#F37021] transition">
-                        Terms of Service
-                      </a>
                       .
                     </p>
+
+                    {error && (
+                      <div className="px-4 py-3 rounded-xl bg-red-50 border border-red-200 text-red-600 text-[13px]">
+                        {error}
+                      </div>
+                    )}
 
                     <button
                       type="button"
                       onClick={handleSubmit}
-                      disabled={loading}
-                      className="btn-primary w-full justify-center mt-1"
+                      disabled={loading || !isValid}
+                      className={`btn-primary w-full justify-center mt-1 ${!isValid || loading ? "opacity-50 cursor-not-allowed" : ""}`}
                     >
                       {loading ? (
                         <span className="flex items-center gap-2">
