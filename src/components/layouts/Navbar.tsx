@@ -1,14 +1,78 @@
 import { brandConfig } from "../../config/brandConfig";
 import { FaBars, FaTimes } from "react-icons/fa";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import "../../style/gloabal.css";
+
+const MobileAccordion = ({
+  item,
+  onClose,
+}: {
+  item: (typeof brandConfig.meta.home.nav.menuItems)[0];
+  onClose: () => void;
+}) => {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="border-b border-[#1F2A44]/08 last:border-0">
+      <button
+        type="button"
+        onClick={() => setOpen((p) => !p)}
+        className="w-full flex items-center justify-between py-3 text-[#1F2A44] font-medium hover:text-orange-500 transition"
+      >
+        {item.label}
+        <motion.span
+          animate={{ rotate: open ? 180 : 0 }}
+          transition={{ duration: 0.2 }}
+          className="text-[12px] opacity-50"
+        >
+          ▼
+        </motion.span>
+      </button>
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="overflow-hidden pl-4 pb-2"
+          >
+            {item.subMenu?.map((sub, i) =>
+              sub.path.startsWith("http") ? (
+                <a
+                  key={i}
+                  href={sub.path}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={onClose}
+                  className="block py-2 text-[14px] text-[#4B5563] hover:text-orange-500 transition"
+                >
+                  {sub.label}
+                </a>
+              ) : (
+                <Link
+                  key={i}
+                  to={sub.path}
+                  onClick={onClose}
+                  className="block py-2 text-[14px] text-[#4B5563] hover:text-orange-500 transition"
+                >
+                  {sub.label}
+                </Link>
+              )
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
 
 const Navbar = () => {
   const nav = brandConfig.meta.home.nav;
   const logo = brandConfig.meta.companylogo;
   const location = useLocation();
+  const navigate = useNavigate();
 
   const [isOpen, setIsOpen] = useState(false);
   const [openIndex, setOpenIndex] = useState<number | null>(null);
@@ -55,7 +119,19 @@ const Navbar = () => {
                 onMouseLeave={handleClose}
               >
                 {item.subMenu ? (
-                  <button className="hover:text-orange-500 transition pb-1">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const firstPath = item.subMenu?.[0]?.path;
+                      if (!firstPath) return;
+                      if (firstPath.startsWith("http")) {
+                        window.open(firstPath, "_blank", "noopener,noreferrer");
+                        return;
+                      }
+                      navigate(firstPath);
+                    }}
+                    className="hover:text-orange-500 transition pb-1"
+                  >
                     {item.label}
                   </button>
                 ) : (
@@ -85,15 +161,27 @@ const Navbar = () => {
                       onMouseEnter={() => handleOpen(index)}
                       onMouseLeave={handleClose}
                     >
-                      {item.subMenu.map((sub, i) => (
-                        <Link
-                          key={i}
-                          to={sub.path}
-                          className="block px-4 py-2.5 text-[14px] text-[#1F2A44] hover:bg-orange-50 hover:text-orange-500 transition-colors"
-                        >
-                          {sub.label}
-                        </Link>
-                      ))}
+                      {item.subMenu.map((sub, i) =>
+                        sub.path.startsWith("http") ? (
+                          <a
+                            key={i}
+                            href={sub.path}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="block px-4 py-2.5 text-[14px] text-[#1F2A44] hover:bg-orange-50 hover:text-orange-500 transition-colors"
+                          >
+                            {sub.label}
+                          </a>
+                        ) : (
+                          <Link
+                            key={i}
+                            to={sub.path}
+                            className="block px-4 py-2.5 text-[14px] text-[#1F2A44] hover:bg-orange-50 hover:text-orange-500 transition-colors"
+                          >
+                            {sub.label}
+                          </Link>
+                        )
+                      )}
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -103,7 +191,11 @@ const Navbar = () => {
         </nav>
 
         {/* GET STARTED */}
-        <button className="hidden md:block p-[2px] rounded-full bg-gradient-to-r from-[#E65C00] to-[#F7931E]">
+        <button
+          type="button"
+          onClick={() => navigate("/contact")}
+          className="hidden md:block p-[2px] rounded-full bg-gradient-to-r from-[#E65C00] to-[#F7931E]"
+        >
           <span className="flex items-center justify-center h-[40px] px-4 bg-white rounded-full text-[#E65C00] font-semibold hover:bg-transparent hover:text-white transition duration-300">
             {nav.buttons.getstarted}
           </span>
@@ -126,20 +218,37 @@ const Navbar = () => {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            className="md:hidden bg-white px-6 py-4 flex flex-col gap-4 shadow-md overflow-hidden"
+            className="md:hidden bg-white px-6 py-4 flex flex-col gap-1 shadow-md overflow-hidden"
           >
-            {nav.menuItems.map((item, index) => (
-              <Link
-                key={index}
-                to={item.path === "#" ? "/" : item.path}
-                className="text-[#1F2A44] font-medium hover:text-orange-500 transition"
-                onClick={() => setIsOpen(false)}
-              >
-                {item.label}
-              </Link>
-            ))}
-            <button className="mt-2 p-[2px] rounded-full bg-gradient-to-r from-[#E65C00] to-[#F7931E]">
-              <span className="flex items-center justify-center h-[40px] px-4 bg-white rounded-full text-[#E65C00] font-semibold">
+            {nav.menuItems.map((item, index) => {
+              if (item.subMenu) {
+                return (
+                  <MobileAccordion
+                    key={index}
+                    item={item}
+                    onClose={() => setIsOpen(false)}
+                  />
+                );
+              }
+              return (
+                <Link
+                  key={index}
+                  to={item.path}
+                  className="text-[#1F2A44] font-medium hover:text-orange-500 transition py-3 border-b border-[#1F2A44]/08 last:border-0"
+                  onClick={() => setIsOpen(false)}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
+            <button
+              type="button"
+              onClick={() => {
+                setIsOpen(false); navigate("/contact");
+              }}
+              className="mt-3 p-[2px] rounded-full bg-gradient-to-r from-[#E65C00] to-[#F7931E]"
+            >
+              <span className="flex items-center justify-center h-[44px] px-4 bg-white rounded-full text-[#E65C00] font-semibold">
                 {nav.buttons.getstarted}
               </span>
             </button>
